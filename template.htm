@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Graphical Password</title>
+<link rel="stylesheet" href="js/jquery-ui.css">
+<script src="js/jquery.js"></script>
+<script src="js/jquery-ui.js"></script>
+<style>
+.selPalette, .selCanvas {width:25px; height:20px; padding:0.5em; margin:10px; border:1px solid black;
+	color:#333; text-align:center; text-shadow: 0px 5px 20px #fff;}
+#selectedColor {width:25px; height:25px; padding:0.5em; margin:31px 10px 0 10px; border:1px solid black; float:left;}
+.hover {cursor:pointer; font-weight:900; text-shadow:0px 5px 10px #333;}
+</style>
+
+<script>
+var color = "#fff";
+
+$(document).ready(function($) {
+	$.ajaxSetup({
+		cache: false
+	});
+	$("button").button();
+
+	$('input#lineSite').change(function () {
+		var str = $("input#lineSite").val();
+		if (str=="") {return};
+		// Post via AJAX
+		$.post("jqXHR/s", {val: str},
+			function(input) {$("input#lineResult").val(input.message);},
+			'json');
+	});
+	$('input#linePwd').change(function () {
+		var str = $("input#linePwd").val();
+		if (str=="") {return};
+		// Post via AJAX
+		$.post("jqXHR/p", {val: str},
+			function(input) {$("input#lineResult").val(input.message);},
+			'json');
+	});
+
+	$(".selPalette").hover(
+		function () {$(this).addClass("hover");},
+		function () {$(this).removeClass("hover");}
+	);
+	$(".selCanvas").hover(
+		function () {$(this).addClass("hover");},
+		function () {$(this).removeClass("hover");}
+	);
+
+	$(".selPalette").click(function() {
+		color = $(this).css("background-color");
+		$("#selectedColor").css("background-color", color);
+	});
+	$(".selCanvas").click(function() {
+		$(this).css("background-color", color);
+	});
+
+	$("#reset").click(function() {
+		$(".selCanvas").css("background-color", "#fff");
+		$("input#lineGResult").val("");
+	});
+
+	$("#generate").click(function() {
+	var matrix = ""; var rgb = ""; var result = "";
+	function hex(x) {return ("0" + parseInt(x).toString(16)).slice(-2);}
+	$('.selCanvas').each(function(index) {
+		rgb = $(this).css('background-color').match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+		result = hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+		matrix += result + ' ';
+	});
+	// Must have 3 colors selected
+	if ( $('.selCanvas').length - matrix.match(/ffffff/g).length < 3 ) {
+		alert( "Cannot generate password !\nMust paint at least 3 cells !" );
+		return;
+	};
+	// Must have 3 white cells
+	if ( matrix.match(/ffffff/g).length < 3 ) {
+		alert( "Cannot generate password !\nMust have at least 3 white cells !" );
+		return;
+	};
+	// Post message via AJAX
+	$.post("jqXHR/g", {val: matrix},
+		function(input) {$("input#lineGResult").val(input.message);},
+		'json');
+	});
+
+});
+</script>
+</head>
+<body>
+
+<div class="ui-widget"><div class="ui-state-highlight ui-corner-all" style="margin:25px;padding:1em;">
+	<p><span class="ui-icon ui-icon-info" style="float:left;margin-right:0.3em;margin-top:0.3em;"></span><strong>Password generator</strong> </p>
+	<label for="lineSite">Site you want to generate a password for:</label><br /><input id="lineSite" style="width:250px;"/><br /><br />
+	<label for="linePwd">A secret keyword/ password for this site:<br />
+	<span style="font-size:small;">If the keyword is long, the password will also be longer !</span></label><br />
+	<input id="linePwd" style="width:250px;" /><br /><br />
+	<label for="lineResult">Resulted password >></label><br /><input id="lineResult" style="width:250px;" /><br />
+</div></div>
+
+<div class="ui-widget"><div class="ui-state-highlight ui-corner-all" style="margin:25px;padding:1em;">
+<p><span class="ui-icon ui-icon-info" style="float:left;margin-right:0.3em;margin-top:0.3em;"></span><strong>Visual Password generator</strong> </p>
+
+<table style="float:left;">
+<tr><td colspan="3">Select color ...</td></tr>
+<tr>
+	<td class="selPalette" style="background:red;"> R</td>
+	<td class="selPalette" style="background:yellow;"> Y</td>
+	<td class="selPalette" style="background:blue;"> B</td>
+</tr><tr>
+	<td class="selPalette" style="background:orange;"> O</td>
+	<td class="selPalette" style="background:green;"> G</td>
+	<td class="selPalette" style="background:darkviolet;"> V</td>
+<tr></tr>
+	<td class="selPalette" style="background:white;"> X</td>
+	<td class="selPalette" style="background:grey;"> G</td>
+	<td class="selPalette" style="background:black;"> B</td>
+</tr>
+</table>
+<div id="selectedColor"></div>
+<table style="float:left;">
+<tr><td colspan="5">... paint here</td></tr>
+<tr>
+	<td class="selCanvas" style="background:#fff;"> 01</td>
+	<td class="selCanvas" style="background:#fff;"> 02</td>
+	<td class="selCanvas" style="background:#fff;"> 03</td>
+	<td class="selCanvas" style="background:#fff;"> 04</td>
+	<td class="selCanvas" style="background:#fff;"> 05</td>
+</tr><tr>
+	<td class="selCanvas" style="background:#fff;"> 06</td>
+	<td class="selCanvas" style="background:#fff;"> 07</td>
+	<td class="selCanvas" style="background:#fff;"> 08</td>
+	<td class="selCanvas" style="background:#fff;"> 09</td>
+	<td class="selCanvas" style="background:#fff;"> 10</td>
+</tr><tr>
+	<td class="selCanvas" style="background:#fff;"> 11</td>
+	<td class="selCanvas" style="background:#fff;"> 12</td>
+	<td class="selCanvas" style="background:#fff;"> 13</td>
+	<td class="selCanvas" style="background:#fff;"> 14</td>
+	<td class="selCanvas" style="background:#fff;"> 15</td>
+</tr><tr>
+	<td class="selCanvas" style="background:#fff;"> 16</td>
+	<td class="selCanvas" style="background:#fff;"> 17</td>
+	<td class="selCanvas" style="background:#fff;"> 18</td>
+	<td class="selCanvas" style="background:#fff;"> 19</td>
+	<td class="selCanvas" style="background:#fff;"> 20</td>
+</tr><tr>
+	<td class="selCanvas" style="background:#fff;"> 21</td>
+	<td class="selCanvas" style="background:#fff;"> 22</td>
+	<td class="selCanvas" style="background:#fff;"> 23</td>
+	<td class="selCanvas" style="background:#fff;"> 24</td>
+	<td class="selCanvas" style="background:#fff;"> 25</td>
+</tr>
+</table>
+<div style="margin:1.8em;float:left">
+<button type="button" id="generate">Generate!</button><button type="button" id="reset">Reset</button><br /><br />
+<label for="lineResult">Resulted password >></label><br /><input id="lineGResult" style="width:300px;" />
+</div>
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+</div></div>
+
+</body>
+</html>
