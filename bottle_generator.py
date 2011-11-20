@@ -15,12 +15,14 @@ from pbkdf2 import PBKDF2
 from bottle import default_app, run, route, get, post, debug
 from bottle import response, request, template, static_file
 
+BASE_PATH = os.path.dirname(__file__)
+
 SITE = ''
 PWD = ''
 
 @route(':filename#.*\.png|.*\.gif|.*\.jpg|.*\.css|.*\.js#')
 def server_static(filename=None, what=None):
-    return static_file(filename, root=os.getcwd())
+    return static_file(filename, root=BASE_PATH)
 
 @route('/')
 @route('/index')
@@ -28,7 +30,7 @@ def server_static(filename=None, what=None):
 @route('/home')
 @route('/home/')
 def home():
-    return template('template.htm')
+    return template(BASE_PATH + '/template.htm')
 
 # # # # # # # # #
 # Preparing XINHA
