@@ -21,7 +21,8 @@ xinha_config.toolbar=[
 (Xinha.is_gecko?[]:["cut","copy","paste","overwrite","saveas"]),
 ["separator","killword","clearfonts","removeformat","toggleborders","splitblock","lefttoright","righttoleft"],
 ["separator","htmlmode","showhelp","about"]];
-xinha_config.pageStyleSheets=["http://localhost:333/"+"js/full_example.css"];
+//xinha_config.pageStyleSheets=["http://croqqq.pythonanywhere.com/"+"js/Xinha.style.css"];
+xinha_config.pageStyleSheets=["http://localhost:333/"+"js/Xinha.style.css"];
 xinha_editors=Xinha.makeEditors(xinha_editors,xinha_config,xinha_plugins);
 Xinha.startEditors(xinha_editors)};
 Xinha.addOnloadHandler(xinha_init);

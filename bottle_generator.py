@@ -37,32 +37,32 @@ def home():
 # # # # # # # # #
 @route('/js/modules/CreateLink/dialog.html')
 def d1():
-    return template('js/modules/CreateLink/dialog.html')
+    return template(BASE_PATH + '/js/modules/CreateLink/dialog.html')
 
 @route('/js/modules/InsertImage/dialog.html')
 def d2():
-    return template('js/modules/InsertImage/dialog.html')
+    return template(BASE_PATH + '/js/modules/InsertImage/dialog.html')
 
 @route('/js/modules/InsertTable/dialog.html')
 def d3():
-    return template('js/modules/InsertTable/dialog.html')
+    return template(BASE_PATH + '/js/modules/InsertTable/dialog.html')
 
 @route('/js/plugins/SuperClean/dialog.html')
 def d4():
-    return template('js/plugins/SuperClean/dialog.html')
+    return template(BASE_PATH + '/js/plugins/SuperClean/dialog.html')
 
 @route('/js/popups/editor_help.html')
 def help():
-    return template('js/popups/editor_help.html')
+    return template(BASE_PATH + '/js/popups/editor_help.html')
 
 @route('/js/modules/AboutBox/dialog.html')
 def about():
-    return template('js/modules/AboutBox/dialog.html')
+    return template(BASE_PATH + '/js/modules/AboutBox/dialog.html')
 
 @route('/editor')
 @route('/editor/')
 def xinha():
-    return template('Xinha.htm')
+    return template(BASE_PATH + '/xinha.htm')
 # # # # # # # # #
 # End of XINHA
 # # # # # # # # #
