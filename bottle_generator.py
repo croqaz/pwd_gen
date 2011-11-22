@@ -32,41 +32,6 @@ def server_static(filename=None, what=None):
 def home():
     return template(BASE_PATH + '/template.htm')
 
-# # # # # # # # #
-# Preparing XINHA
-# # # # # # # # #
-@route('/js/modules/CreateLink/dialog.html')
-def d1():
-    return template(BASE_PATH + '/js/modules/CreateLink/dialog.html')
-
-@route('/js/modules/InsertImage/dialog.html')
-def d2():
-    return template(BASE_PATH + '/js/modules/InsertImage/dialog.html')
-
-@route('/js/modules/InsertTable/dialog.html')
-def d3():
-    return template(BASE_PATH + '/js/modules/InsertTable/dialog.html')
-
-@route('/js/plugins/SuperClean/dialog.html')
-def d4():
-    return template(BASE_PATH + '/js/plugins/SuperClean/dialog.html')
-
-@route('/js/popups/editor_help.html')
-def help():
-    return template(BASE_PATH + '/js/popups/editor_help.html')
-
-@route('/js/modules/AboutBox/dialog.html')
-def about():
-    return template(BASE_PATH + '/js/modules/AboutBox/dialog.html')
-
-@route('/editor')
-@route('/editor/')
-def xinha():
-    return template(BASE_PATH + '/xinha.htm')
-# # # # # # # # #
-# End of XINHA
-# # # # # # # # #
-
 @post('/jqXHR/s')
 def ajax_call_s():
     #

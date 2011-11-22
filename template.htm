@@ -3,17 +3,27 @@
 <head>
 <meta charset="utf-8">
 <title>Graphical Password</title>
-<link rel="stylesheet" href="js/jquery-ui.css">
 <script src="js/jquery.js"></script>
 <script src="js/jquery-ui.js"></script>
+
+<link rel="stylesheet" href="editor/jquery.wysiwyg.css" type="text/css"/>
+<link rel="stylesheet" href="editor/jquery.wysiwyg.modal.css" type="text/css"/>
+<link rel="stylesheet" href="js/jquery-ui.css">
+
 <style>
 .selPalette, .selCanvas {width:25px; height:20px; padding:0.5em; margin:10px; border:1px solid black;
 	color:#333; text-align:center; text-shadow: 0px 5px 20px #fff;}
 #selectedColor {width:25px; height:25px; padding:0.5em; margin:31px 10px 0 10px; border:1px solid black; float:left;}
-.hover {cursor:pointer; font-weight:900; text-shadow:0px 5px 10px #333;}
+.hover {cursor:pointer; text-shadow:0px 6px 10px blue, 0px 10px 15px red;}
 </style>
 
-<script>
+<script type="text/javascript" src="editor/jquery.wysiwyg.js"></script>
+<script type="text/javascript" src="editor/lib/jquery.simplemodal.js"></script>
+<script type="text/javascript" src="editor/controls/wysiwyg.image.js"></script>
+<script type="text/javascript" src="editor/controls/wysiwyg.link.js"></script>
+<script type="text/javascript" src="editor/controls/wysiwyg.table.js"></script>
+
+<script type="text/javascript">
 var color = "#fff";
 
 $(document).ready(function($) {
@@ -21,6 +31,7 @@ $(document).ready(function($) {
 		cache: false
 	});
 	$("button").button();
+	$("#tabs").tabs();
 
 	$('input#lineSite').change(function () {
 		var str = $("input#lineSite").val();
@@ -84,14 +95,97 @@ $(document).ready(function($) {
 		function(input) {$("input#lineGResult").val(input.message);},
 		'json');
 	});
-
 });
+
+(function($) {
+	$(document).ready(function() {
+		$('#wysiwyg').wysiwyg({
+		css: 'editor/custom.css',
+		controls: {
+			code : {visible : false},
+
+			bold          : {visible : true},
+			italic        : {visible : true},
+			underline     : {visible : true},
+			strikeThrough : {visible : true},
+
+			h1 : {visible : true},
+			h2 : {visible : true},
+			h3 : {visible : true},
+
+			justifyLeft   : {visible : true},
+			justifyCenter : {visible : true},
+			justifyRight  : {visible : true},
+			justifyFull   : {visible : true},
+
+			indent  : {visible : true},
+			outdent : {visible : true},
+
+			subscript   : {visible : true},
+			superscript : {visible : true},
+
+			undo : {visible : true},
+			redo : {visible : true},
+
+			insertOrderedList    : {visible : true},
+			insertUnorderedList  : {visible : true},
+			insertHorizontalRule : {visible : true},
+
+			cut   : {visible : true},
+			copy  : {visible : true},
+			paste : {visible : true},
+			html  : { visible: true },
+			increaseFontSize : {visible : true},
+			decreaseFontSize : {visible : true},
+
+			h4: {
+				groupIndex: 7,
+				visible: true,
+				className: "h4",
+				command: ($.browser.msie || $.browser.safari) ? "FormatBlock" : "heading",
+				"arguments": ($.browser.msie || $.browser.safari) ? "<h4>" : "h4",
+				tags: ["h4"],
+				tooltip: "Header 4"
+			},
+
+			h5: {
+				groupIndex: 7,
+				visible: true,
+				className: "h5",
+				command: ($.browser.msie || $.browser.safari)	? "FormatBlock" : "heading",
+				"arguments": ($.browser.msie || $.browser.safari) ? "<h5>" : "h5",
+				tags: ["h5"],
+				tooltip: "Header 5"
+			},
+
+			h6: {
+				groupIndex: 7,
+				visible: true,
+				className: "h6",
+				command: ($.browser.msie || $.browser.safari) ? "FormatBlock" : "heading",
+				"arguments": ($.browser.msie || $.browser.safari) ? "<h6>" : "h6",
+				tags: ["h6"],
+				tooltip: "Header 6"
+			},
+
+			},
+		});
+	});
+})(jQuery);
+
 </script>
 </head>
 <body>
 
-<div class="ui-widget"><div class="ui-state-highlight ui-corner-all" style="margin:25px;padding:1em;">
-	<p><span class="ui-icon ui-icon-info" style="float:left;margin-right:0.3em;margin-top:0.3em;"></span><strong>Password generator</strong> </p>
+<div id="tabs">
+<ul>
+<li><a href="#tabs-1">Visual Pass</a></li>
+<li><a href="#tabs-2">Graphical Pass</a></li>
+<li><a href="#tabs-3">Encryption</a></li>
+</ul>
+
+<div id="tabs-1" class="ui-widget"><div class="ui-state-highlight ui-corner-all" style="margin:25px;padding:1em;">
+	<p><span class="ui-icon ui-icon-info" style="float:left;margin-right:0.3em;margin-top:0.2em;"></span><strong>Password generator</strong> </p>
 	<label for="lineSite">Site you want to generate a password for:</label><br /><input id="lineSite" style="width:250px;"/><br /><br />
 	<label for="linePwd">A secret keyword/ password for this site:<br />
 	<span style="font-size:small;">If the keyword is long, the password will also be longer !</span></label><br />
@@ -99,8 +193,8 @@ $(document).ready(function($) {
 	<label for="lineResult">Resulted password >></label><br /><input id="lineResult" style="width:250px;" /><br />
 </div></div>
 
-<div class="ui-widget"><div class="ui-state-highlight ui-corner-all" style="margin:25px;padding:1em;">
-<p><span class="ui-icon ui-icon-info" style="float:left;margin-right:0.3em;margin-top:0.3em;"></span><strong>Visual Password generator</strong> </p>
+<div id="tabs-2" class="ui-widget"><div class="ui-state-highlight ui-corner-all" style="margin:25px;padding:1em;">
+<p><span class="ui-icon ui-icon-info" style="float:left;margin-right:0.3em;margin-top:0.2em;"></span><strong>Visual Password generator</strong> </p>
 
 <table style="float:left;">
 <tr><td colspan="3">Select color ...</td></tr>
@@ -118,7 +212,11 @@ $(document).ready(function($) {
 	<td class="selPalette" style="background:black;"> B</td>
 </tr>
 </table>
-<div id="selectedColor"></div>
+
+<span style="float:left;"><center>&gt;&gt;</center>
+<div style="margin-top:6px;" id="selectedColor"></div>
+</span>
+
 <table style="float:left;">
 <tr><td colspan="5">... paint here</td></tr>
 <tr>
@@ -160,5 +258,11 @@ $(document).ready(function($) {
 <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 </div></div>
 
+<div id="tabs-3" class="ui-widget"><div class="ui-state-highlight ui-corner-all" style="margin:25px;padding:1em;">
+<p><span class="ui-icon ui-icon-info" style="float:left;margin-right:0.3em;margin-top:0.2em;"></span><strong>Encryption</strong> </p>
+	<textarea id="wysiwyg" rows="15" cols="90"></textarea>
+</div></div>
+
+</div>
 </body>
 </html>
