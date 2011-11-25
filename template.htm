@@ -12,6 +12,7 @@
 
 <style>
 .help {padding-top:3px;padding-bottom:3px;}
+.help-widget {margin-top:10px;margin-bottom:10px;padding:1em;font-size:small;}
 .selPalette, .selCanvas {width:25px; height:20px; padding:0.5em; margin:10px; border:1px solid black;
 	color:#333; text-align:center; text-shadow: 0px 5px 20px #fff;}
 #selectedColor {width:25px; height:25px; padding:0.5em; margin:31px 10px 0 10px; border:1px solid black; float:left;}
@@ -207,12 +208,19 @@ $(document).ready(function($) {
 	<strong style="float:left;">&nbsp;Password generator&nbsp;</strong>
 	<button id="help1" class="help"></button></p><br />
 	<label for="lineSite">Site you want to generate a password for:</label><br /><input id="lineSite" style="width:250px;"/><br /><br />
-	<label for="linePwd">A secret keyword/ password for this site:<br />
-	<span style="font-size:small;">If the keyword is long, the password will also be longer !</span></label><br />
+	<label for="linePwd">A secret passphrase/ keyword for this site:<br />
 	<input id="linePwd" style="width:250px;" /><br /><br />
 	<label for="lineResult">Resulted password >></label><br /><input id="lineResult" style="width:250px;" /><br />
-<div id="block1" class="ui-state-error ui-corner-all" style="margin-top:10px;margin-bottom:10px;padding:1em;">
-Help for simple password.
+<div id="block1" class="ui-state-error ui-corner-all help-widget">
+Here you can generate very complex passwords, that are easy to remember.<br />
+The resulted password is a lot better than a normal, easy to guess password!<br /><br />
+In the first textbox, you type the name of the site or program you want to create the password for.<br />
+In the second textbox, you type a passphrase that you can easily remember, maybe related to the site or application. If the phrase is long, the resulted password is also longer!<br /><br />
+<b>EXAMPLES</b>:<br /><i>(text 1) `Facebook` ; (text 2) `my fbk account is the best!` ; (resulted password) YXucpu6ihyRp9xdvkNZLXWOCYBf<br />
+(text 1) `TwiTTr` ; (text 2) `i LOVE to tweet` ; (resulted password) sqOoh1DakzuGxvQ</i><br /><br />
+<b>HINTS</b>: All text is case sensitive, so `Facebook` is different from `FaceBook` and different from `facebook`.<br />
+Before typing your passwords, you must be careful, noone must see what you type! If someone knows both the site and the passphrase, he can generate your password and break into your account!<br />
+This is different from everything you used before, you have to be original, but at the same time, use words easy to remember.
 </div></div></div>
 
 <!--  VISUAL PASS GEN T.A.B.  -->
@@ -277,8 +285,11 @@ Help for simple password.
 <label for="lineResult">Resulted password >></label><br /><input id="lineGResult" style="width:300px;" />
 </div>
 <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-<div id="block2" class="ui-state-error ui-corner-all" style="margin-top:10px;margin-bottom:10px;padding:1em;">
-Help for visual password.
+<div id="block2" class="ui-state-error ui-corner-all help-widget">
+Here you can generate passwords from your drawing.<br />
+You must select at least 3 colors, up to a maximum of 22 colors.<br />
+You must be very careful when you are drawing, noone must see what you paint!<br />
+If someone can reproduce your drawing and he knows the site where you will use this password, he can generate the same password and break into your account!
 </div></div></div>
 
 <!--  ENCRYPTION T.A.B.  -->
@@ -287,8 +298,39 @@ Help for visual password.
 <strong>&nbsp;Encryption&nbsp;</strong>
 <button id="help3" class="help"></button></p>
 	<textarea id="wysiwyg" rows="15" cols="90"></textarea>
-<div id="block3" class="ui-state-error ui-corner-all" style="margin-top:10px;margin-bottom:10px;padding:1em;">
-Encryption heeelp. :)
+<br />
+<select id="step1">
+	<option value="">Step 1 (optional)</option>
+	<option value="Rot13">Rot13</option>
+	<option value="ZLIB">ZLIB</option>
+	<option value="BZ2">BZ2</option>
+</select>
+<select id="step2">
+	<option value="">Step 2 (optional)</option>
+	<option value="AES">AES</option>
+	<option value="ARC2">ARC2</option>
+	<option value="Blowfish">Blowfish</option>
+	<option value="CAST">CAST</option>
+	<option value="DES3">DES3</option>
+	<option value="Blowfish">Blowfish</option>
+</select>
+<select id="step3">
+	<option value="">Step 3 (required)</option>
+	<option value="Base64">Base64</option>
+	<option value="Base32">Base32</option>
+	<option value="HEX">HEX</option>
+	<option value="Quopri">Quopri</option>
+	<option value="String esc">String esc</option>
+	<option value="Json">Json</option>
+	<option value="UU Codec">UU Codec</option>
+</select>
+<button type="button" id="encrypt">Encrypt!</button><button type="button" id="clear">Clear</button><br />
+<div id="block3" class="ui-state-error ui-corner-all help-widget">
+Here you can encrypt a piece of text, using military grade encryption (AES, Blowfish, etc).<br />
+You can use a normal password, or generate a strong password using the previous tabs.<br />
+The password is optional, and it's only used in step 2 (encryption). If you don't select one encryption, the text will NOT be crypted.<br />
+If you don't specify a password, but select an encryption, a default password will be used, so you should type your own password. The algorithm is pretty secure even if you use short passwords, but the longer, the better. :)<br />
+The calculations are made on a FREE server, so there are limitations: you can only encrypt the equivalent of a novel (maximum 100,000 characters).
 </div></div></div>
 
 </div>
