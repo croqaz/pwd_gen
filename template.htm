@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="js/jquery-ui.css">
 
 <style>
+#tab-1, #tab-2, #tab-3 {margin:10px;padding:1em;border:1px solid #fad42e;}
 .help {padding-top:3px;padding-bottom:3px;}
 .help-widget {margin-top:10px;margin-bottom:10px;padding:1em;font-size:small;}
 .selPalette, .selCanvas {width:25px; height:20px; padding:0.5em; margin:10px; border:1px solid black;
@@ -214,13 +215,13 @@ $(document).ready(function($) {
 
 <div id="tabs">
 <ul>
-<li><a href="#tabs-1">Visual Pass</a></li>
-<li><a href="#tabs-2">Graphical Pass</a></li>
-<li><a href="#tabs-3">Encryption</a></li>
+<li><a href="#tab-1">Visual Pass</a></li>
+<li><a href="#tab-2">Graphical Pass</a></li>
+<li><a href="#tab-3">Encryption</a></li>
 </ul>
 
 <!--  SIMPLE PASS GEN T.A.B.  -->
-<div id="tabs-1" class="ui-widget"><div class="ui-state-highlight ui-corner-all" style="margin:10px;padding:1em;">
+<div id="tab-1" class="ui-widget"><div class="ui-corner-all">
 	<p><span class="ui-icon ui-icon-info" style="float:left;margin-top:0.2em;"></span>
 	<strong style="float:left;">&nbsp;Password generator&nbsp;</strong>
 	<button id="help1" class="help"></button></p><br />
@@ -228,7 +229,7 @@ $(document).ready(function($) {
 	<label for="linePwd">A secret passphrase/ keyword for this site:<br />
 	<input id="linePwd" style="width:250px;" /><br /><br />
 	<label for="lineResult">Resulted password >></label><br /><input id="lineResult" style="width:250px;" /><br />
-<div id="block1" class="ui-state-error ui-corner-all help-widget">
+<div id="block1" class="ui-state-highlight ui-corner-all help-widget">
 Here you can generate very complex passwords, that are easy to remember.<br />
 The resulted password is a lot better than a normal, easy to guess password!<br /><br />
 In the first textbox, you type the name of the site or program you want to create the password for.<br />
@@ -241,7 +242,7 @@ This is different from everything you used before, you have to be original, but 
 </div></div></div>
 
 <!--  VISUAL PASS GEN T.A.B.  -->
-<div id="tabs-2" class="ui-widget"><div class="ui-state-highlight ui-corner-all" style="margin:10px;padding:1em;">
+<div id="tab-2" class="ui-widget"><div class="ui-corner-all">
 <p><span class="ui-icon ui-icon-info" style="float:left;margin-top:0.2em;"></span>
 <strong>&nbsp;Visual Password generator&nbsp;</strong>
 <button id="help2" class="help"></button></p><br />
@@ -302,7 +303,7 @@ This is different from everything you used before, you have to be original, but 
 <label for="lineResult">Resulted password >></label><br /><input id="lineGResult" style="width:300px;" />
 </div>
 <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-<div id="block2" class="ui-state-error ui-corner-all help-widget">
+<div id="block2" class="ui-state-highlight ui-corner-all help-widget">
 Here you can generate passwords from your drawing.<br />
 You must select at least 3 colors, up to a maximum of 22 colors.<br />
 You must be very careful when you are drawing, noone must see what you paint!<br />
@@ -310,11 +311,19 @@ If someone can reproduce your drawing and he knows the site where you will use t
 </div></div></div>
 
 <!--  ENCRYPTION T.A.B.  -->
-<div id="tabs-3" class="ui-widget"><div class="ui-state-highlight ui-corner-all" style="margin:10px;padding:1em;">
+<div id="tab-3" class="ui-widget"><div class="ui-corner-all">
 <p><span class="ui-icon ui-icon-info" style="float:left;margin-right:0.3em;margin-top:0.2em;"></span>
 <strong>&nbsp;Encryption&nbsp;</strong>
 <button id="help3" class="help"></button></p>
-	<textarea id="wysiwyg" rows="15" cols="90"></textarea>
+
+<table>
+<tr>
+<td><textarea id="wysiwyg" rows="15" cols="90"></textarea></td>
+<td><span> &nbsp; &gt;&gt;</span></td>
+<td><img src="img/lovely_skull_by_dejichan.gif" /></td>
+</tr>
+</table>
+
 <br />
 <select id="step1">
 	<option value="">Step 1 (optional)</option>
@@ -342,11 +351,11 @@ If someone can reproduce your drawing and he knows the site where you will use t
 	<option value="XML">XML</option>
 </select>
 <button type="button" id="encrypt">Encrypt!</button><button type="button" id="clear">Clear</button><br />
-<div id="block3" class="ui-state-error ui-corner-all help-widget">
+<div id="block3" class="ui-state-highlight ui-corner-all help-widget">
 Here you can encrypt a piece of text, using military grade encryption (AES, Blowfish, etc).<br />
-You can use a normal password, or generate a strong password using the previous tabs.<br />
+You can use a normal password, or generate a stronger password, in the previous tabs.<br />
 The password is optional, and it's only used in step 2 (encryption). If you don't select one encryption, the text will NOT be crypted.<br />
-If you don't specify a password, but select an encryption, a default password will be used, so you should type your own password. The algorithm is pretty secure even if you use short passwords, but the longer, the better. :)<br />
+If you don't specify a password, but select an encryption, a default password will be used, so you should type your own password. The algorithm is pretty secure even for short passwords, but the longer, the better. :)<br />
 The calculations are made on a FREE server, so there are limitations: you can only encrypt the equivalent of a novel (maximum 100,000 characters).
 </div></div></div>
 

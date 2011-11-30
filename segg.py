@@ -13,8 +13,6 @@ import base64
 import json
 import bz2, zlib
 
-from collections import OrderedDict
-from cStringIO import StringIO
 from Padding import appendPadding, removePadding
 from pbkdf2 import PBKDF2
 
@@ -30,7 +28,7 @@ ROT = string.maketrans('nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM', '
 #
 SCRAMBLE = ['None', 'ROT13', 'ZLIB', 'BZ2']
 SCRAMBLE_D = {'None':'N', 'ROT13':'R', 'ZLIB':'ZL', 'BZ2':'BZ'}
-ENC = OrderedDict([('AES', 'AES'), ('Blowfish', 'B'), ('ARC2', 'ARC'), ('CAST', 'CA'), ('DES3', 'D'), ('RSA', 'RSA'), ('None', 'N')])
+ENC = {'AES':'AES', 'Blowfish':'B', 'ARC2':'ARC', 'CAST':'CA', 'DES3':'D', 'RSA':'RSA', 'None':'N'}
 ENCODE = ['Base64 Codec', 'Base32 Codec', 'HEX Codec', 'Quopri Codec', 'String Escape', 'UU Codec', 'Json', 'XML']
 ENCODE_D = {'Base64 Codec':'64', 'Base64':'64', 'Base32 Codec':'32', 'Base32':'32',
     'HEX Codec':'H', 'HEX':'H', 'Quopri Codec':'Q', 'Quopri':'Q',
