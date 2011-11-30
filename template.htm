@@ -113,6 +113,23 @@ $(document).ready(function($) {
 		function(input) {$("input#lineGResult").val(input.message);},
 		'json');
 	});
+
+	$("#clear").click(function() {
+		$('textarea#wysiwyg').wysiwyg('clear');
+	});
+
+	$("#encrypt").click(function() {
+		var str = $("textarea#wysiwyg").wysiwyg('getContent');
+		if (str=="") {return};
+		var step1 = $("select#step1 option:selected").val();
+		var step2 = $("select#step2 option:selected").val();
+		var step3 = $("select#step3 option:selected").val();
+		if (step3=="") {alert( "Cannot encrypt !\nMust select step 3 (encoding) !" );return;};
+		// Post via AJAX
+		$.post("jqXHR/enc", {'1':step1, '2':step2, '3':step3, val:str},
+			function(input) {$("#").val(input.message);},
+			'json');
+	});
 });
 
 (function($) {
@@ -312,7 +329,6 @@ If someone can reproduce your drawing and he knows the site where you will use t
 	<option value="Blowfish">Blowfish</option>
 	<option value="CAST">CAST</option>
 	<option value="DES3">DES3</option>
-	<option value="Blowfish">Blowfish</option>
 </select>
 <select id="step3">
 	<option value="">Step 3 (required)</option>
@@ -321,8 +337,9 @@ If someone can reproduce your drawing and he knows the site where you will use t
 	<option value="HEX">HEX</option>
 	<option value="Quopri">Quopri</option>
 	<option value="String esc">String esc</option>
-	<option value="Json">Json</option>
 	<option value="UU Codec">UU Codec</option>
+	<option value="Json">Json</option>
+	<option value="XML">XML</option>
 </select>
 <button type="button" id="encrypt">Encrypt!</button><button type="button" id="clear">Clear</button><br />
 <div id="block3" class="ui-state-error ui-corner-all help-widget">

@@ -10,6 +10,7 @@ import os, sys
 import platform
 import json
 import binascii as ba
+from segg import ScrambledEgg
 from pbkdf2 import PBKDF2
 
 from bottle import default_app, run, route, get, post, debug
@@ -54,6 +55,23 @@ def ajax_call_p():
     resp = {'message': generatePassword()}
     response.content_type = 'application/json; charset=UTF-8'
     return json.dumps(resp)
+    #
+
+@post('/jqXHR/enc')
+def ajax_call_enc():
+    #
+    if not request.header.get('X-Requested-With') == 'XMLHttpRequest':
+        return
+    #
+    segg = ScrambledEgg()
+    step1 = request.forms.get('1', '').upper()
+    step2 = request.forms.get('2', '')
+    step3 = request.forms.get('3', '')
+    VALUE = request.forms.get('val', '')
+    #
+    print step1, step2, step3
+    print 'result =>', segg.encrypt(txt=VALUE, pre=step1, enc=step2, post=step3, pwd='0')
+    print
     #
 
 # Grafical password.

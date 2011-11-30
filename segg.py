@@ -32,7 +32,10 @@ SCRAMBLE = ['None', 'ROT13', 'ZLIB', 'BZ2']
 SCRAMBLE_D = {'None':'N', 'ROT13':'R', 'ZLIB':'ZL', 'BZ2':'BZ'}
 ENC = OrderedDict([('AES', 'AES'), ('Blowfish', 'B'), ('ARC2', 'ARC'), ('CAST', 'CA'), ('DES3', 'D'), ('RSA', 'RSA'), ('None', 'N')])
 ENCODE = ['Base64 Codec', 'Base32 Codec', 'HEX Codec', 'Quopri Codec', 'String Escape', 'UU Codec', 'Json', 'XML']
-ENCODE_D = {'Base64 Codec':'64', 'Base32 Codec':'32', 'HEX Codec':'H', 'Quopri Codec':'Q', 'String Escape':'STR', 'UU Codec':'UU', 'Json':'JS', 'XML':'XML'}
+ENCODE_D = {'Base64 Codec':'64', 'Base64':'64', 'Base32 Codec':'32', 'Base32':'32',
+    'HEX Codec':'H', 'HEX':'H', 'Quopri Codec':'Q', 'Quopri':'Q',
+    'String Escape':'STR', 'String esc':'STR',
+    'UU Codec':'UU', 'Json':'JS', 'XML':'XML'}
 #
 NO_TAGS = re.compile(
     '<#>(?P<ts>[0-9a-zA-Z ]{1,3}:[0-9a-zA-Z ]{1,3}:[0-9a-zA-Z ]{1,3})</?#>|' \
@@ -142,8 +145,8 @@ class ScrambledEgg():
     def encrypt(self, txt, pre, enc, post, pwd, tags=True):
         #
         # Scramble operation.
-        if pre == 'None':
-            pass
+        if not pre or pre == 'None':
+            pre = 'None'
         elif pre == 'ZLIB':
             txt = zlib.compress(txt)
         elif pre == 'BZ2':
@@ -161,7 +164,6 @@ class ScrambledEgg():
         #
         pwd = self._fix_password(pwd, enc)
         txt = appendPadding(txt, blocksize=16)
-        #
         # Encryption operation.
         if enc == 'AES':
             o = AES.new(pwd, mode=2)
@@ -183,32 +185,33 @@ class ScrambledEgg():
             o = Blowfish.new(pwd, mode=3)
             encrypted = o.encrypt(txt)
         elif not enc or enc == 'None':
+            enc = 'None'
             encrypted = txt
         else:
             raise Exception('Invalid encryption mode "%s" !' % enc)
         #
         # Codec operation.
-        if post == 'Base64 Codec':
+        if post == 'Base64' or post == 'Base64 Codec':
             if tags:
                 final = '<#>%s:%s:%s<#>%s' % (SCRAMBLE_D[pre], ENC[enc], ENCODE_D[post].replace(' Codec',''), ba.b2a_base64(encrypted))
             else:
                 final = ba.b2a_base64(encrypted)
-        elif post == 'Base32 Codec':
+        elif post == 'Base32' or post == 'Base32 Codec':
             if tags:
                 final = '<#>%s:%s:%s<#>%s' % (SCRAMBLE_D[pre], ENC[enc], ENCODE_D[post].replace(' Codec',''), base64.b32encode(encrypted))
             else:
                 final = base64.b32encode(encrypted)
-        elif post == 'HEX Codec':
+        elif post == 'HEX' or post == 'HEX Codec':
             if tags:
                 final = '<#>%s:%s:%s<#>%s' % (SCRAMBLE_D[pre], ENC[enc], ENCODE_D[post].replace(' Codec',''), ba.b2a_hex(encrypted))
             else:
                 final = ba.b2a_hex(encrypted)
-        elif post == 'Quopri Codec':
+        elif post == 'Quopri' or post == 'Quopri Codec':
             if tags:
                 final = '<#>%s:%s:%s<#>%s' % (SCRAMBLE_D[pre], ENC[enc], ENCODE_D[post].replace(' Codec',''), ba.b2a_qp(encrypted, quotetabs=True, header=True))
             else:
                 final = ba.b2a_qp(encrypted, quotetabs=True, header=True)
-        elif post == 'String Escape':
+        elif post == 'String esc' or post == 'String Escape':
             if tags:
                 final = '<#>%s:%s:%s<#>%s' % (SCRAMBLE_D[pre], ENC[enc], ENCODE_D[post], encrypted.encode('string_escape'))
             else:
