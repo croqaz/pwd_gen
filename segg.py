@@ -7,11 +7,13 @@
 
 import os, sys
 import re, math
+import struct
 import string
 import binascii as ba
 import base64
 import json
 import bz2, zlib
+import Image # To-Image, From-Image
 
 from Padding import appendPadding, removePadding
 from pbkdf2 import PBKDF2
@@ -46,7 +48,9 @@ NO_TAGS = re.compile(
 # These numbers are used when (re)creating PNG images.
 SCRAMBLE_NR = {'None':'1', 'ROT13':'2', 'ZLIB':'3', 'BZ2':'4'}
 ENCRYPT_NR = {'AES':'1', 'ARC2':'2', 'CAST':'3', 'Blowfish':'5', 'DES3':'4', 'RSA':'6', 'None':'9'}
-ENCODE_NR = {'Base64 Codec':'4', 'Base32 Codec':'2', 'HEX Codec':'1', 'Quopri Codec':'9', 'String Escape':'6', 'UU Codec':'8', 'XML':'7'}
+ENCODE_NR = {'Base64 Codec':'4', 'Base64':'4', 'Base32 Codec':'2', 'Base32':'2',
+    'HEX Codec':'1', 'HEX':'1', 'Quopri Codec':'9','Quopri':'9',
+    'String Escape':'6', 'String esc':'6', 'UU Codec':'8'}
 #
 
 def findg(g):
@@ -359,14 +363,21 @@ class ScrambledEgg():
         HEX encoding is `high density`. Two letters are transformed into a color from 1 to 255,
         so one pixel consists of 8 letters, instead of 4 letters.
         '''
-        #
+
+        if not pre: pre = 'None'
+        if not enc: enc = 'None'
+        if post not in ('HEX', 'Base64', 'Base32'):
+            print 'Encoding must be HEX, Base64, or Base32! Exiting!'
+            return
+
         # Input can be string, or file. If's file, read it.
         if str(type(txt)) == "<type 'file'>":
             txt.seek(0)
             txt = txt.read()
 
-        # Strip pre/enc/post tags.
-        txt = re.sub(NO_TAGS, '', txt)
+        if not encrypt:
+            # Strip pre/enc/post tags.
+            txt = re.sub(NO_TAGS, '', txt)
 
         # All text must be reversed, to pop from the end of the characters list.
         if encrypt: # If text MUST be encrypted first, encrypt without pre/enc/post tags.
@@ -377,7 +388,7 @@ class ScrambledEgg():
             val = txt[::-1]
 
         # Calculate the edge of the square and blank square.
-        if post == 'HEX Codec':
+        if post == 'HEX':
             # Length.
             edge = math.ceil(math.sqrt( float(len(val) + 1)/8.0 ))
             blank = math.ceil(edge * edge - float(len(val)) / 8.0)
@@ -390,16 +401,17 @@ class ScrambledEgg():
 
         # `Second pixel` : a number representing the length of valid characters.
         # This is only used for HEX, because when decrypting, this number of letters is trimmed from the end of the string.
-        if post == 'HEX Codec':
-            second_pixel = str(QtGui.QColor(int(blank)).name())[3:]
+        if post == 'HEX':
+            #second_pixel = str(QtGui.QColor(int(blank)).name())[3:]
+            second_pixel = struct.pack('BBB',*(0,0,blank)).encode('hex')[-4:]
             val += second_pixel[::-1]
-            #print '! Second pixel', second_pixel
+            print '! Second pixel', second_pixel
             del second_pixel
 
         # `First pixel` : a string with 4 numbers representing Pre/ Enc/ Post information.
         # For Base64/ Base32, this variabile is encoded in one pixel (4 characters).
         # For HEX, First Pixel + Second Pixel are both encoded in one pixel (8 characters).
-        if post == 'HEX Codec':
+        if post == 'HEX':
             first_pixel = '0'
         else:
             first_pixel = '1'
@@ -407,23 +419,29 @@ class ScrambledEgg():
         # Add first pixel at the end of the reversed string.
         first_pixel += SCRAMBLE_NR[pre] + ENCRYPT_NR[enc] + ENCODE_NR[post]
         val += first_pixel[::-1]
-        #print '! First pixel', first_pixel
+        print '! First pixel', first_pixel
         del first_pixel
 
         # Explode the encrypted string.
         list_val = list(val)
+
         # Creating new square image.
         print('Creating img, %ix%i, blank : %i, string to encode : %i chars.' % (edge, edge, blank, len(val)))
-        im = QtGui.QImage(edge, edge, QtGui.QImage.Format_ARGB32)
-        _pix = im.setPixel
-        _rgba = QtGui.qRgba
+
+        #im = QtGui.QImage(edge, edge, QtGui.QImage.Format_ARGB32)
+        #_pix = im.setPixel
+        #_rgba = QtGui.qRgba
+
+        edge = int(edge)
+        im = Image.new('RGBA', (edge, edge))
+        _pix = im.load()
         _int = int
         _ord = ord
 
         # HEX codec.
-        if post == 'HEX Codec':
-            for i in range(int(edge)):
-                for j in range(int(edge)):
+        if post == 'HEX':
+            for i in range(edge):
+                for j in range(edge):
                     #
                     _r = _g = _b = _a = 255
 
@@ -450,18 +468,19 @@ class ScrambledEgg():
                         _a = _int(list_val.pop()+list_val.pop(), 16)
                     elif len(list_val) == 1:
                         _a = _int(list_val.pop(), 16)
-                    #
-                    _pix(j, i, _rgba(_r, _g, _b, _a))
+
+                    #_pix(j, i, _rgba(_r, _g, _b, _a))
+                    _pix[i, j] = (_r, _g, _b, _a)
                     #
 
         # Base 64 and Base 32.
         else:
-            for i in range(int(edge)):
-                for j in range(int(edge)):
+            for i in range(edge):
+                for j in range(edge):
                     #
                     if blank:
                         blank -= 1
-                        _pix(j, i, _rgba(255, 255, 255, 255))
+                        _pix[i, j] = (255, 255, 255, 255)
                         continue
                     #
                     _r = _g = _b = _a = 255
@@ -475,12 +494,13 @@ class ScrambledEgg():
                     if len(list_val) >= 1:
                         _a = _ord(list_val.pop())
 
-                    _pix(j, i, _rgba(_r, _g, _b, _a))
+                    #_pix(j, i, _rgba(_r, _g, _b, _a))
+                    _pix[i, j] = (_r, _g, _b, _a)
                     #
 
         #
         try:
-            im.save(path, 'PNG', -1)
+            im.save(path, 'PNG')
         except:
             print('Cannot save PNG file "%s" !' % path)
         #

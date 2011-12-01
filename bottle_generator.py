@@ -10,6 +10,8 @@ import os, sys
 import platform
 import json
 import binascii as ba
+import cStringIO as IO
+
 from segg import ScrambledEgg
 from pbkdf2 import PBKDF2
 
@@ -57,23 +59,6 @@ def ajax_call_p():
     return json.dumps(resp)
     #
 
-@post('/jqXHR/enc')
-def ajax_call_enc():
-    #
-    if not request.header.get('X-Requested-With') == 'XMLHttpRequest':
-        return
-    #
-    segg = ScrambledEgg()
-    step1 = request.forms.get('1', '').upper()
-    step2 = request.forms.get('2', '')
-    step3 = request.forms.get('3', '')
-    VALUE = request.forms.get('val', '')
-    #
-    print step1, step2, step3
-    print 'result =>', segg.encrypt(txt=VALUE, pre=step1, enc=step2, post=step3, pwd='0')
-    print
-    #
-
 # Grafical password.
 @post('/jqXHR/g')
 def ajax_call_g():
@@ -85,6 +70,31 @@ def ajax_call_g():
     PWD = ' '.join(['0' if x == 'ffffff' else x for x in colors.split()])
     SITE = ' '.join(['0' if x != 'ffffff' else 'fff' for x in colors.split()])
     resp = {'message': generatePassword(25)}
+    response.content_type = 'application/json; charset=UTF-8'
+    return json.dumps(resp)
+    #
+
+@post('/jqXHR/enc')
+def ajax_call_enc():
+    #
+    if not request.header.get('X-Requested-With') == 'XMLHttpRequest':
+        return
+    #
+    segg = ScrambledEgg()
+    step1 = request.forms.get('1', '').upper()
+    step2 = request.forms.get('2', '')
+    step3 = request.forms.get('3', '')
+    INPUT = request.forms.get('val', '')
+    #
+    # String...
+    #OUTPUT = segg.encrypt(txt=INPUT, pre=step1, enc=step2, post=step3, pwd='0', tags=False)
+    #
+    # Image...
+    OUTPUT = IO.StringIO()
+    segg.toImage(txt=INPUT, pre=step1, enc=step2, post=step3, pwd='0', path=OUTPUT)
+    IMG = ba.b2a_base64(OUTPUT.getvalue())
+    #
+    resp = {'message': 'data:image/png;base64,' + IMG}
     response.content_type = 'application/json; charset=UTF-8'
     return json.dumps(resp)
     #

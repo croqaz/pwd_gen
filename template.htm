@@ -54,7 +54,7 @@ $(document).ready(function($) {
 
 	$('input#lineSite').change(function () {
 		var str = $("input#lineSite").val();
-		if (str=="") {return};
+		if (str=="") {$("input#lineResult").val("");return};
 		// Post via AJAX
 		$.post("jqXHR/s", {val: str},
 			function(input) {$("input#lineResult").val(input.message);},
@@ -62,7 +62,7 @@ $(document).ready(function($) {
 	});
 	$('input#linePwd').change(function () {
 		var str = $("input#linePwd").val();
-		if (str=="") {return};
+		if (str=="") {$("input#lineResult").val("");return};
 		// Post via AJAX
 		$.post("jqXHR/p", {val: str},
 			function(input) {$("input#lineResult").val(input.message);},
@@ -127,8 +127,8 @@ $(document).ready(function($) {
 		var step3 = $("select#step3 option:selected").val();
 		if (step3=="") {alert( "Cannot encrypt !\nMust select step 3 (encoding) !" );return;};
 		// Post via AJAX
-		$.post("jqXHR/enc", {'1':step1, '2':step2, '3':step3, val:str},
-			function(input) {$("#").val(input.message);},
+		$.post("jqXHR/enc", {1:step1, 2:step2, 3:step3, val:str},
+			function(input) {$("#coded").attr("src",input.message);},
 			'json');
 	});
 });
@@ -139,34 +139,26 @@ $(document).ready(function($) {
 		css: 'editor/custom.css',
 		controls: {
 			code : {visible : false},
-
 			bold          : {visible : true},
 			italic        : {visible : true},
 			underline     : {visible : true},
 			strikeThrough : {visible : true},
-
 			h1 : {visible : true},
 			h2 : {visible : true},
 			h3 : {visible : true},
-
 			justifyLeft   : {visible : true},
 			justifyCenter : {visible : true},
 			justifyRight  : {visible : true},
 			justifyFull   : {visible : true},
-
 			indent  : {visible : true},
 			outdent : {visible : true},
-
 			subscript   : {visible : true},
 			superscript : {visible : true},
-
 			undo : {visible : true},
 			redo : {visible : true},
-
 			insertOrderedList    : {visible : true},
 			insertUnorderedList  : {visible : true},
 			insertHorizontalRule : {visible : true},
-
 			cut   : {visible : true},
 			copy  : {visible : true},
 			paste : {visible : true},
@@ -175,40 +167,27 @@ $(document).ready(function($) {
 			decreaseFontSize : {visible : true},
 
 			h4: {
-				groupIndex: 7,
-				visible: true,
-				className: "h4",
+				groupIndex: 7, visible: true, className: "h4",
 				command: ($.browser.msie || $.browser.safari) ? "FormatBlock" : "heading",
 				"arguments": ($.browser.msie || $.browser.safari) ? "<h4>" : "h4",
-				tags: ["h4"],
-				tooltip: "Header 4"
+				tags: ["h4"], tooltip: "Header 4"
 			},
-
 			h5: {
-				groupIndex: 7,
-				visible: true,
-				className: "h5",
-				command: ($.browser.msie || $.browser.safari)	? "FormatBlock" : "heading",
+				groupIndex: 7, visible: true, className: "h5",
+				command: ($.browser.msie || $.browser.safari) ? "FormatBlock" : "heading",
 				"arguments": ($.browser.msie || $.browser.safari) ? "<h5>" : "h5",
-				tags: ["h5"],
-				tooltip: "Header 5"
+				tags: ["h5"], tooltip: "Header 5"
 			},
-
 			h6: {
-				groupIndex: 7,
-				visible: true,
-				className: "h6",
+				groupIndex: 7, visible: true, className: "h6",
 				command: ($.browser.msie || $.browser.safari) ? "FormatBlock" : "heading",
 				"arguments": ($.browser.msie || $.browser.safari) ? "<h6>" : "h6",
-				tags: ["h6"],
-				tooltip: "Header 6"
-			},
-
-			},
+				tags: ["h6"], tooltip: "Header 6"
+			}
+			}
 		});
 	});
 })(jQuery);
-
 </script>
 </head>
 <body>
@@ -320,7 +299,7 @@ If someone can reproduce your drawing and he knows the site where you will use t
 <tr>
 <td><textarea id="wysiwyg" rows="15" cols="90"></textarea></td>
 <td><span> &nbsp; &gt;&gt;</span></td>
-<td><img src="img/lovely_skull_by_dejichan.gif" /></td>
+<td><img id="coded" src="img/lovely_skull_by_dejichan.gif" /></td>
 </tr>
 </table>
 
@@ -330,7 +309,7 @@ If someone can reproduce your drawing and he knows the site where you will use t
 	<option value="Rot13">Rot13</option>
 	<option value="ZLIB">ZLIB</option>
 	<option value="BZ2">BZ2</option>
-</select>
+</select>&nbsp;
 <select id="step2">
 	<option value="">Step 2 (optional)</option>
 	<option value="AES">AES</option>
@@ -338,7 +317,7 @@ If someone can reproduce your drawing and he knows the site where you will use t
 	<option value="Blowfish">Blowfish</option>
 	<option value="CAST">CAST</option>
 	<option value="DES3">DES3</option>
-</select>
+</select>&nbsp;
 <select id="step3">
 	<option value="">Step 3 (required)</option>
 	<option value="Base64">Base64</option>
@@ -349,8 +328,8 @@ If someone can reproduce your drawing and he knows the site where you will use t
 	<option value="UU Codec">UU Codec</option>
 	<option value="Json">Json</option>
 	<option value="XML">XML</option>
-</select>
-<button type="button" id="encrypt">Encrypt!</button><button type="button" id="clear">Clear</button><br />
+</select>&nbsp;
+<button type="button" id="encrypt">Encrypt!</button>&nbsp;<button type="button" id="clear">Clear</button><br />
 <div id="block3" class="ui-state-highlight ui-corner-all help-widget">
 Here you can encrypt a piece of text, using military grade encryption (AES, Blowfish, etc).<br />
 You can use a normal password, or generate a stronger password, in the previous tabs.<br />
