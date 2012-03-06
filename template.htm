@@ -5,13 +5,10 @@
 <title>Graphical Password</title>
 <script src="js/jquery.js"></script>
 <script src="js/jquery-ui.js"></script>
-
-<link rel="stylesheet" href="editor/jquery.wysiwyg.css" type="text/css"/>
-<link rel="stylesheet" href="editor/jquery.wysiwyg.modal.css" type="text/css"/>
 <link rel="stylesheet" href="js/jquery-ui.css">
 
 <style>
-#tab-1, #tab-2, #tab-3 {margin:10px;padding:1em;border:1px solid #fad42e;}
+#tab-1, #tab-2 {margin:10px;padding:1em;border:1px solid #fad42e;}
 .help {padding-top:3px;padding-bottom:3px;}
 .help-widget {margin-top:10px;margin-bottom:10px;padding:1em;font-size:small;}
 .selPalette, .selCanvas {width:25px; height:20px; padding:0.5em; margin:10px; border:1px solid black;
@@ -19,12 +16,6 @@
 #selectedColor {width:25px; height:25px; padding:0.5em; margin:31px 10px 0 10px; border:1px solid black; float:left;}
 .hover {cursor:pointer; text-shadow:0px 6px 10px blue, 0px 10px 15px red;}
 </style>
-
-<script type="text/javascript" src="editor/jquery.wysiwyg.js"></script>
-<script type="text/javascript" src="editor/lib/jquery.simplemodal.js"></script>
-<script type="text/javascript" src="editor/controls/wysiwyg.image.js"></script>
-<script type="text/javascript" src="editor/controls/wysiwyg.link.js"></script>
-<script type="text/javascript" src="editor/controls/wysiwyg.table.js"></script>
 
 <script type="text/javascript">
 var color = "#fff";
@@ -40,7 +31,6 @@ $(document).ready(function($) {
 
 	$("#block1").hide();
 	$("#block2").hide();
-	$("#block3").hide();
 
 	$("#help1").click(function(){
 			$("#block1").toggle(750);
@@ -48,23 +38,22 @@ $(document).ready(function($) {
 	$("#help2").click(function(){
 			$("#block2").toggle(750);
 		});
-	$("#help3").click(function(){
-			$("#block3").toggle(750);
-		});
 
-	$('input#lineSite').change(function () {
-		var str = $("input#lineSite").val();
-		if (str=="") {$("input#lineResult").val("");return};
-		// Post via AJAX
-		$.post("jqXHR/s", {val: str},
+	$('input#lineSite').keydown(function() {
+		var str1 = $("input#lineSite").val();
+		var str2 = $("input#linePwd").val();
+		if (str1=="" || str2=="") {$("input#lineResult").val("");return};
+		// Post via XMLHttpRequest
+		$.post("jqXHR/s", {val: str1},
 			function(input) {$("input#lineResult").val(input.message);},
 			'json');
 	});
-	$('input#linePwd').change(function () {
-		var str = $("input#linePwd").val();
-		if (str=="") {$("input#lineResult").val("");return};
-		// Post via AJAX
-		$.post("jqXHR/p", {val: str},
+	$('input#linePwd').keydown(function() {
+		var str1 = $("input#lineSite").val();
+		var str2 = $("input#linePwd").val();
+		if (str1=="" || str2=="") {$("input#lineResult").val("");return};
+		// Post via XMLHttpRequest
+		$.post("jqXHR/p", {val: str2},
 			function(input) {$("input#lineResult").val(input.message);},
 			'json');
 	});
@@ -118,76 +107,7 @@ $(document).ready(function($) {
 	$("#clear").click(function() {
 		$('textarea#wysiwyg').wysiwyg('clear');
 	});
-
-	$("#encrypt").click(function() {
-		var str = $("textarea#wysiwyg").wysiwyg('getContent');
-		if (str=="") {return};
-		var step1 = $("select#step1 option:selected").val();
-		var step2 = $("select#step2 option:selected").val();
-		var step3 = $("select#step3 option:selected").val();
-		if (step3=="") {alert( "Cannot encrypt !\nMust select step 3 (encoding) !" );return;};
-		// Post via AJAX
-		$.post("jqXHR/enc", {1:step1, 2:step2, 3:step3, val:str},
-			function(input) {$("#coded").attr("src",input.message);},
-			'json');
-	});
 });
-
-(function($) {
-	$(document).ready(function() {
-		$('#wysiwyg').wysiwyg({
-		css: 'editor/custom.css',
-		controls: {
-			code : {visible : false},
-			bold          : {visible : true},
-			italic        : {visible : true},
-			underline     : {visible : true},
-			strikeThrough : {visible : true},
-			h1 : {visible : true},
-			h2 : {visible : true},
-			h3 : {visible : true},
-			justifyLeft   : {visible : true},
-			justifyCenter : {visible : true},
-			justifyRight  : {visible : true},
-			justifyFull   : {visible : true},
-			indent  : {visible : true},
-			outdent : {visible : true},
-			subscript   : {visible : true},
-			superscript : {visible : true},
-			undo : {visible : true},
-			redo : {visible : true},
-			insertOrderedList    : {visible : true},
-			insertUnorderedList  : {visible : true},
-			insertHorizontalRule : {visible : true},
-			cut   : {visible : true},
-			copy  : {visible : true},
-			paste : {visible : true},
-			html  : { visible: true },
-			increaseFontSize : {visible : true},
-			decreaseFontSize : {visible : true},
-
-			h4: {
-				groupIndex: 7, visible: true, className: "h4",
-				command: ($.browser.msie || $.browser.safari) ? "FormatBlock" : "heading",
-				"arguments": ($.browser.msie || $.browser.safari) ? "<h4>" : "h4",
-				tags: ["h4"], tooltip: "Header 4"
-			},
-			h5: {
-				groupIndex: 7, visible: true, className: "h5",
-				command: ($.browser.msie || $.browser.safari) ? "FormatBlock" : "heading",
-				"arguments": ($.browser.msie || $.browser.safari) ? "<h5>" : "h5",
-				tags: ["h5"], tooltip: "Header 5"
-			},
-			h6: {
-				groupIndex: 7, visible: true, className: "h6",
-				command: ($.browser.msie || $.browser.safari) ? "FormatBlock" : "heading",
-				"arguments": ($.browser.msie || $.browser.safari) ? "<h6>" : "h6",
-				tags: ["h6"], tooltip: "Header 6"
-			}
-			}
-		});
-	});
-})(jQuery);
 </script>
 </head>
 <body>
@@ -196,7 +116,6 @@ $(document).ready(function($) {
 <ul>
 <li><a href="#tab-1">Visual Pass</a></li>
 <li><a href="#tab-2">Graphical Pass</a></li>
-<li><a href="#tab-3">Encryption</a></li>
 </ul>
 
 <!--  SIMPLE PASS GEN T.A.B.  -->
@@ -204,10 +123,10 @@ $(document).ready(function($) {
 	<p><span class="ui-icon ui-icon-info" style="float:left;margin-top:0.2em;"></span>
 	<strong style="float:left;">&nbsp;Password generator&nbsp;</strong>
 	<button id="help1" class="help"></button></p><br />
-	<label for="lineSite">Site you want to generate a password for:</label><br /><input id="lineSite" style="width:250px;"/><br /><br />
+	<label for="lineSite">Site you want to generate a password for:</label><br /><input id="lineSite" style="width:330px;"/><br /><br />
 	<label for="linePwd">A secret passphrase/ keyword for this site:<br />
-	<input id="linePwd" style="width:250px;" /><br /><br />
-	<label for="lineResult">Resulted password >></label><br /><input id="lineResult" style="width:250px;" /><br />
+	<input id="linePwd" style="width:330px;" /><br /><br />
+	<label for="lineResult">Resulted password >></label><br /><input id="lineResult" style="width:330px;" /><br />
 <div id="block1" class="ui-state-highlight ui-corner-all help-widget">
 Here you can generate very complex passwords, that are easy to remember.<br />
 The resulted password is a lot better than a normal, easy to guess password!<br /><br />
@@ -287,55 +206,6 @@ Here you can generate passwords from your drawing.<br />
 You must select at least 3 colors, up to a maximum of 22 colors.<br />
 You must be very careful when you are drawing, noone must see what you paint!<br />
 If someone can reproduce your drawing and he knows the site where you will use this password, he can generate the same password and break into your account!
-</div></div></div>
-
-<!--  ENCRYPTION T.A.B.  -->
-<div id="tab-3" class="ui-widget"><div class="ui-corner-all">
-<p><span class="ui-icon ui-icon-info" style="float:left;margin-right:0.3em;margin-top:0.2em;"></span>
-<strong>&nbsp;Encryption&nbsp;</strong>
-<button id="help3" class="help"></button></p>
-
-<table>
-<tr>
-<td><textarea id="wysiwyg" rows="15" cols="90"></textarea></td>
-<td><span> &nbsp; &gt;&gt;</span></td>
-<td><img id="coded" src="img/lovely_skull_by_dejichan.gif" /></td>
-</tr>
-</table>
-
-<br />
-<select id="step1">
-	<option value="">Step 1 (optional)</option>
-	<option value="Rot13">Rot13</option>
-	<option value="ZLIB">ZLIB</option>
-	<option value="BZ2">BZ2</option>
-</select>&nbsp;
-<select id="step2">
-	<option value="">Step 2 (optional)</option>
-	<option value="AES">AES</option>
-	<option value="ARC2">ARC2</option>
-	<option value="Blowfish">Blowfish</option>
-	<option value="CAST">CAST</option>
-	<option value="DES3">DES3</option>
-</select>&nbsp;
-<select id="step3">
-	<option value="">Step 3 (required)</option>
-	<option value="Base64">Base64</option>
-	<option value="Base32">Base32</option>
-	<option value="HEX">HEX</option>
-	<option value="Quopri">Quopri</option>
-	<option value="String esc">String esc</option>
-	<option value="UU Codec">UU Codec</option>
-	<option value="Json">Json</option>
-	<option value="XML">XML</option>
-</select>&nbsp;
-<button type="button" id="encrypt">Encrypt!</button>&nbsp;<button type="button" id="clear">Clear</button><br />
-<div id="block3" class="ui-state-highlight ui-corner-all help-widget">
-Here you can encrypt a piece of text, using military grade encryption (AES, Blowfish, etc).<br />
-You can use a normal password, or generate a stronger password, in the previous tabs.<br />
-The password is optional, and it's only used in step 2 (encryption). If you don't select one encryption, the text will NOT be crypted.<br />
-If you don't specify a password, but select an encryption, a default password will be used, so you should type your own password. The algorithm is pretty secure even for short passwords, but the longer, the better. :)<br />
-The calculations are made on a FREE server, so there are limitations: you can only encrypt the equivalent of a novel (maximum 100,000 characters).
 </div></div></div>
 
 </div>
