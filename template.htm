@@ -9,6 +9,7 @@
 	<link type="text/css" rel="stylesheet" href="js/bootstrap.css" />
 	<link type="text/css" rel="stylesheet" href="js/responsive.css" />
 	<style>
+	.hashBox {padding-left:98px;padding-bottom:11px;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
 	.selPalette, .selCanvas {
 		width:25px; height:20px; padding:0.5em; margin:10px; border:1px solid black;
 		color:#333; text-align:center; text-shadow: 0px 5px 20px #fff;}
@@ -41,19 +42,24 @@
 			<div class="control-group">
 				<label for="lineSite">Site you want to generate a password for:</label>
 				<div class="controls">
-					<input type="text" class="input-xlarge" id="lineSite" /><br />
+					<input type="text" class="input-xxlarge" id="lineSite" />&nbsp;<span id="siteLen"></span><br />
 				</div>
 				<label for="linePwd">A secret passphrase/ keyword for this site:</label>
 				<div class="controls">
-					<input type="text" class="input-xlarge" id="linePwd" /><br />
+					<input type="text" class="input-xxlarge" id="linePwd" />&nbsp;<span id="pwdLen"></span><br />
 				</div>
 				<div class="controls" style="margin-top:0.5em;">
 					<button class="btn btn-large btn-primary" id="generate_p">Generate!</button>&nbsp;
-					<button class="btn btn-large" id="reset_p">Reset</button><br />
+					<button class="btn btn-large btn-warning" id="reset_p">Reset</button><br />
 				</div>
 				<label for="lineResult" style="margin-top:1em;">Resulted password &gt;&gt;</label>
 				<div class="controls">
-					<span class="input-xlarge uneditable-input" id="lineResult"></span>
+					<span class="input-xxlarge uneditable-input" id="lineResult"></span>
+					<span class="hashBox" id="c1">&nbsp;</span>&nbsp;
+					<span class="hashBox" id="c2">&nbsp;</span>&nbsp;
+					<span class="hashBox" id="c3">&nbsp;</span>&nbsp;
+					<span class="hashBox" id="c4">&nbsp;</span>&nbsp;
+					<span class="hashBox" id="c5">&nbsp;</span>
 				</div>
 			</div>
 
@@ -80,7 +86,7 @@
 			<h3>&nbsp;Visual Password generator&nbsp;<i class="icon-question-sign" id="click-help2" style="margin-top:0.2em;"></i></h3><br />
 
 			<table style="float:left;">
-			<tr><td colspan="3">Select color ...</td></tr>
+			<tr><td colspan="3"><big>Select color ...</big></td></tr>
 			<tr>
 				<td class="selPalette" style="background:red;"> R</td>
 				<td class="selPalette" style="background:yellow;"> Y</td>
@@ -96,10 +102,10 @@
 			</tr>
 			</table>
 
-			<span style="float:left;"><center>&gt;&gt;</center><div style="margin-top:6px;" id="selectedColor"></div></span>
+			<span style="float:left;"><center><big>&gt;&gt;</big></center><div style="margin-top:6px;" id="selectedColor"></div></span>
 
 			<table style="float:left;">
-			<tr><td colspan="5">... paint here</td></tr>
+			<tr><td colspan="5"><big>... paint here</big></td></tr>
 			<tr>
 				<td class="selCanvas" style="background:#fff;"> 01</td>
 				<td class="selCanvas" style="background:#fff;"> 02</td>
@@ -135,9 +141,9 @@
 
 			<div style="margin:1.8em;float:left">
 				<button class="btn btn-large btn-primary" id="generate_g">Generate!</button>&nbsp;
-				<button class="btn btn-large" id="reset_g">Reset</button><br />
+				<button class="btn btn-large btn-warning" id="reset_g">Reset</button><br />
 				<label for="lineResult" style="margin-top:0.5em;">Resulted password &gt;&gt;</label>
-				<span class="input-xlarge uneditable-input" id="lineGResult"></span>
+				<span class="input-large uneditable-input" id="lineGResult"></span>
 			</div>
 
 			<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
@@ -145,7 +151,7 @@
 			<div id="box-help2" class="alert alert-info">
 			<span class="label label-info">HELP</span><br />
 			<p style="margin-top:0.5em;">Here you can generate passwords from your drawing.<br />
-			You must select at least 3 colors, up to a maximum of 22 colors.<br />
+			You must select at least <b>3</b> colors, up to a maximum of <b>22</b> colors.<br />
 			You must be very careful when you are drawing, noone must see what you paint!<br />
 			If someone can reproduce your drawing and he knows the site where you will use this password, he can generate the same password and break into your account!</p>
 			</div> <!--  /help box  -->
@@ -179,26 +185,16 @@ $(document).ready(function($) {
 		$("#box-help2").toggle(750);
 	});
 
-	/*
-	$('input#lineSite').keydown(function() {
-		var str1 = $("input#lineSite").val();
-		var str2 = $("input#linePwd").val();
-		if (str1=="" || str2=="") {$("span#lineResult").text("");return};
-		// Post via XMLHttpRequest
-		$.post("jqXHR/s", {val: str1},
-			function(input) {$("span#lineResult").text(input.message);},
-			'json');
+	$('input#lineSite').keyup(function() {
+		var str = $("input#lineSite").val();
+		if (str=="") {$("span#siteLen").text("");return};
+		$("span#siteLen").text(str.length);
 	});
-	$('input#linePwd').keydown(function() {
-		var str1 = $("input#lineSite").val();
-		var str2 = $("input#linePwd").val();
-		if (str1=="" || str2=="") {$("span#lineResult").text("");return};
-		// Post via XMLHttpRequest
-		$.post("jqXHR/p", {val: str2},
-			function(input) {$("span#lineResult").text(input.message);},
-			'json');
+	$('input#linePwd').keyup(function() {
+		var str = $("input#linePwd").val();
+		if (str=="") {$("span#pwdLen").text("");return};
+		$("span#pwdLen").text(str.length);
 	});
-	*/
 
 	$(".selPalette").hover(
 		function() {$(this).addClass("hover");},
@@ -221,6 +217,11 @@ $(document).ready(function($) {
 		$("input#lineSite").val("");
 		$("input#linePwd").val("");
 		$("span#lineResult").text("");
+		$("span#c1").css("background-color", "#fff");
+		$("span#c2").css("background-color", "#fff");
+		$("span#c3").css("background-color", "#fff");
+		$("span#c4").css("background-color", "#fff");
+		$("span#c5").css("background-color", "#fff");
 	});
 
 	$("#generate_p").click(function() {
@@ -229,7 +230,14 @@ $(document).ready(function($) {
 		if (str1=="" || str2=="") {$("span#lineResult").text("");return};
 		// Post via XMLHttpRequest
 		$.post("jqXHR/p", {s: str1, p: str2},
-			function(input) {$("span#lineResult").text(input.message);},
+			function(input) {
+				$("span#lineResult").text(input.message);
+				$("span#c1").css("background-color", "#"+input.c1);
+				$("span#c2").css("background-color", "#"+input.c2);
+				$("span#c3").css("background-color", "#"+input.c3);
+				$("span#c4").css("background-color", "#"+input.c4);
+				$("span#c5").css("background-color", "#"+input.c5);
+			},
 			'json');
 	});
 

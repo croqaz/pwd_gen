@@ -7,6 +7,7 @@
 # ---
 
 import os, sys
+import hashlib
 import platform
 import webbrowser
 
@@ -35,21 +36,6 @@ def server_static(filename=None, what=None):
 def home():
     return template(BASE_PATH + '/template.htm')
 
-"""
-# Text site name
-@post('/jqXHR/s')
-def ajax_call_s():
-    #
-    if not request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return 'Invalid XMLHttpRequest!'
-    global SITE
-    SITE = request.forms.get('val', '')
-    resp = {'message': generatePassword()}
-    response.content_type = 'application/json; charset=UTF-8'
-    return json.dumps(resp)
-    #
-"""
-
 # Text password
 @post('/jqXHR/p')
 def ajax_call_p():
@@ -59,9 +45,8 @@ def ajax_call_p():
     global SITE, PWD
     PWD = request.forms.get('p', '')
     SITE = request.forms.get('s', '')
-    resp = {'message': generatePassword()}
     response.content_type = 'application/json; charset=UTF-8'
-    return json.dumps(resp)
+    return json.dumps(generatePassword())
     #
 
 # Grafical password
@@ -74,23 +59,34 @@ def ajax_call_g():
     colors = request.forms.get('val', '')
     PWD = ' '.join(['0' if x == 'ffffff' else x for x in colors.split()])
     SITE = ' '.join(['0' if x != 'ffffff' else 'fff' for x in colors.split()])
-    resp = {'message': generatePassword(24)}
     response.content_type = 'application/json; charset=UTF-8'
-    return json.dumps(resp)
+    return json.dumps(generatePassword(24))
     #
 
 # Helper function
 def generatePassword(size=0):
+    #
     global SITE, PWD
     SITE = SITE.strip()
     PWD = PWD.strip()
     if not SITE or not PWD: return ''
+    #
     if not size:
         size = len(PWD)
+        color = 1
+    else:
+        color = None
     if size > 24:
         size = 24
+    #
     txt = PBKDF2(passphrase=PWD, salt=SITE, iterations=1024).read(size*2)
-    return ba.b2a_base64(txt)[:size]
+    resp = {'message': ba.b2a_base64(txt)[:size]}
+    #
+    if color:
+        color = hashlib.md5(txt).hexdigest()[1:-1]
+        resp.update({'c1':color[:6], 'c2':color[6:12], 'c3':color[12:18], 'c4':color[18:24], 'c5':color[24:]})
+    return resp
+    #
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
