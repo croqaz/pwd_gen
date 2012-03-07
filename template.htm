@@ -1,21 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Graphical Password</title>
-<script src="js/jquery.js"></script>
-<script src="js/jquery-ui.js"></script>
-<link rel="stylesheet" href="js/jquery-ui.css">
+	<meta charset="utf-8">
+	<title>Graphical Password</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Graphical Password Generator">
+	<meta name="author" content="Cristi Constantin">
+	<link type="text/css" rel="stylesheet" href="js/bootstrap.css" />
+	<link type="text/css" rel="stylesheet" href="js/responsive.css" />
+	<style>
+	.selPalette, .selCanvas {
+		width:25px; height:20px; padding:0.5em; margin:10px; border:1px solid black;
+		color:#333; text-align:center; text-shadow: 0px 5px 20px #fff;}
+	#selectedColor {width:25px; height:25px; padding:0.5em; margin:31px 10px 0 10px; border:1px solid black; float:left;}
+	.hover {cursor:pointer; text-shadow:0px 6px 10px blue, 0px 10px 15px red;}
+	</style>
+	<!--[if lt IE 9]><script src="js/html5.js"></script><![endif]-->
+	<!--<link type="image/ico" rel="shortcut icon" href="img/favicon.ico">-->
+</head>
+<body>
 
-<style>
-#tab-1, #tab-2 {margin:10px;padding:1em;border:1px solid #fad42e;}
-.help {padding-top:3px;padding-bottom:3px;}
-.help-widget {margin-top:10px;margin-bottom:10px;padding:1em;font-size:small;}
-.selPalette, .selCanvas {width:25px; height:20px; padding:0.5em; margin:10px; border:1px solid black;
-	color:#333; text-align:center; text-shadow: 0px 5px 20px #fff;}
-#selectedColor {width:25px; height:25px; padding:0.5em; margin:31px 10px 0 10px; border:1px solid black; float:left;}
-.hover {cursor:pointer; text-shadow:0px 6px 10px blue, 0px 10px 15px red;}
-</style>
+<div class="container-fluid" style="margin-top:18px;">
+	<div class="row-fluid">
+		<div class="span2">&nbsp;</div>
+
+		<div class="span8">
+
+		<div class="tabbable">
+		<ul class="nav nav-tabs" style="font-size: large;">
+			<li class="active"><a href="#tab-1" data-toggle="tab">Visual Pass</a></li>
+			<li><a href="#tab-2" data-toggle="tab">Graphical Pass</a></li>
+		</ul>
+		<div class="tab-content">
+
+			<!--  SIMPLE PASS GEN T.A.B.  -->
+			<div class="tab-pane active" id="tab-1"><div class="well">
+
+			<h3>&nbsp;Password generator&nbsp;<i class="icon-question-sign" id="click-help1" style="margin-top:0.2em;"></i></h3><br />
+
+			<div class="control-group">
+				<label for="lineSite">Site you want to generate a password for:</label>
+				<div class="controls">
+					<input type="text" class="input-xlarge" id="lineSite" /><br />
+				</div>
+				<label for="linePwd">A secret passphrase/ keyword for this site:</label>
+				<div class="controls">
+					<input type="text" class="input-xlarge" id="linePwd" /><br />
+				</div>
+				<div class="controls" style="margin-top:0.5em;">
+					<button class="btn btn-large btn-primary" id="generate_p">Generate!</button>&nbsp;
+					<button class="btn btn-large" id="reset_p">Reset</button><br />
+				</div>
+				<label for="lineResult" style="margin-top:1em;">Resulted password &gt;&gt;</label>
+				<div class="controls">
+					<span class="input-xlarge uneditable-input" id="lineResult"></span>
+				</div>
+			</div>
+
+			<div id="box-help1" class="alert alert-info">
+			<span class="label label-info">HELP</span><br />
+			<p style="margin-top:0.5em;">Here you can generate very complex passwords, using words that you can easily remember.<br />
+			The resulted password is a lot better than a normal, easy to guess password!<br /><br />
+			In the first textbox, you type the name of the site or program you want to create the password for.<br />
+			In the second textbox, you type a passphrase that you can easily remember, maybe related to the site or application. If the phrase is long, the resulted password is also longer!</p>
+			<span class="label label-info">EXAMPLES</span><br />
+			<p style="margin-top:0.5em;"><i>(text 1) `Facebook` ; (text 2) `my fbk account is the best!` ; (resulted password) YXucpu6ihyRp9xdvkNZLXWOCYBf<br />
+			(text 1) `TwiTTr` ; (text 2) `i LOVE to tweet` ; (resulted password) sqOoh1DakzuGxvQ</i></p>
+			<span class="label label-info">HINTS</span><br />
+			<p style="margin-top:0.5em;"><i>All text is Case Sensitive</i>, so `Facebook` is different from `FaceBook` and different from `facebook`.<br />
+			Before typing your passwords, you must be careful, <i>noone must see what you type</i>! If someone knows both the site and the passphrase, he can generate your password and break into your account!<br /><br />
+			This is different from everything you used before, you have to be original, but at the same time, use words easy to remember.</p>
+			</div> <!--  /help box  -->
+
+			</div></div> <!--  /T.A.B.  -->
+
+			<!--  VISUAL PASS GEN T.A.B.  -->
+			<div class="tab-pane" id="tab-2"><div class="well">
+
+			<h3>&nbsp;Visual Password generator&nbsp;<i class="icon-question-sign" id="click-help2" style="margin-top:0.2em;"></i></h3><br />
+
+			<table style="float:left;">
+			<tr><td colspan="3">Select color ...</td></tr>
+			<tr>
+				<td class="selPalette" style="background:red;"> R</td>
+				<td class="selPalette" style="background:yellow;"> Y</td>
+				<td class="selPalette" style="background:blue;"> B</td>
+			</tr><tr>
+				<td class="selPalette" style="background:orange;"> O</td>
+				<td class="selPalette" style="background:green;"> G</td>
+				<td class="selPalette" style="background:darkviolet;"> V</td>
+			<tr></tr>
+				<td class="selPalette" style="background:white;"> X</td>
+				<td class="selPalette" style="background:grey;"> G</td>
+				<td class="selPalette" style="background:black;"> B</td>
+			</tr>
+			</table>
+
+			<span style="float:left;"><center>&gt;&gt;</center><div style="margin-top:6px;" id="selectedColor"></div></span>
+
+			<table style="float:left;">
+			<tr><td colspan="5">... paint here</td></tr>
+			<tr>
+				<td class="selCanvas" style="background:#fff;"> 01</td>
+				<td class="selCanvas" style="background:#fff;"> 02</td>
+				<td class="selCanvas" style="background:#fff;"> 03</td>
+				<td class="selCanvas" style="background:#fff;"> 04</td>
+				<td class="selCanvas" style="background:#fff;"> 05</td>
+			</tr><tr>
+				<td class="selCanvas" style="background:#fff;"> 06</td>
+				<td class="selCanvas" style="background:#fff;"> 07</td>
+				<td class="selCanvas" style="background:#fff;"> 08</td>
+				<td class="selCanvas" style="background:#fff;"> 09</td>
+				<td class="selCanvas" style="background:#fff;"> 10</td>
+			</tr><tr>
+				<td class="selCanvas" style="background:#fff;"> 11</td>
+				<td class="selCanvas" style="background:#fff;"> 12</td>
+				<td class="selCanvas" style="background:#fff;"> 13</td>
+				<td class="selCanvas" style="background:#fff;"> 14</td>
+				<td class="selCanvas" style="background:#fff;"> 15</td>
+			</tr><tr>
+				<td class="selCanvas" style="background:#fff;"> 16</td>
+				<td class="selCanvas" style="background:#fff;"> 17</td>
+				<td class="selCanvas" style="background:#fff;"> 18</td>
+				<td class="selCanvas" style="background:#fff;"> 19</td>
+				<td class="selCanvas" style="background:#fff;"> 20</td>
+			</tr><tr>
+				<td class="selCanvas" style="background:#fff;"> 21</td>
+				<td class="selCanvas" style="background:#fff;"> 22</td>
+				<td class="selCanvas" style="background:#fff;"> 23</td>
+				<td class="selCanvas" style="background:#fff;"> 24</td>
+				<td class="selCanvas" style="background:#fff;"> 25</td>
+			</tr>
+			</table>
+
+			<div style="margin:1.8em;float:left">
+				<button class="btn btn-large btn-primary" id="generate_g">Generate!</button>&nbsp;
+				<button class="btn btn-large" id="reset_g">Reset</button><br />
+				<label for="lineResult" style="margin-top:0.5em;">Resulted password &gt;&gt;</label>
+				<span class="input-xlarge uneditable-input" id="lineGResult"></span>
+			</div>
+
+			<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+			<div id="box-help2" class="alert alert-info">
+			<span class="label label-info">HELP</span><br />
+			<p style="margin-top:0.5em;">Here you can generate passwords from your drawing.<br />
+			You must select at least 3 colors, up to a maximum of 22 colors.<br />
+			You must be very careful when you are drawing, noone must see what you paint!<br />
+			If someone can reproduce your drawing and he knows the site where you will use this password, he can generate the same password and break into your account!</p>
+			</div> <!--  /help box  -->
+
+			</div></div> <!--  /T.A.B.  -->
+
+		</div> <!--  /tab-content -->
+		</div> <!--  /tabbable -->
+		</div> <!-- /span6 -->
+
+		<div class="span2"&nbsp;></div>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
 
 <script type="text/javascript">
 var color = "#fff";
@@ -25,46 +169,44 @@ $(document).ready(function($) {
 		cache: false
 	});
 
-	$("#tabs").tabs();
-	$("button").button();
-	$("button.help").button({icons: {primary:"ui-icon-help"}, text: false});
+	$("#box-help1").hide();
+	$("#box-help2").hide();
 
-	$("#block1").hide();
-	$("#block2").hide();
+	$("#click-help1").click(function(){
+		$("#box-help1").toggle(750);
+	});
+	$("#click-help2").click(function(){
+		$("#box-help2").toggle(750);
+	});
 
-	$("#help1").click(function(){
-			$("#block1").toggle(750);
-		});
-	$("#help2").click(function(){
-			$("#block2").toggle(750);
-		});
-
+	/*
 	$('input#lineSite').keydown(function() {
 		var str1 = $("input#lineSite").val();
 		var str2 = $("input#linePwd").val();
-		if (str1=="" || str2=="") {$("input#lineResult").val("");return};
+		if (str1=="" || str2=="") {$("span#lineResult").text("");return};
 		// Post via XMLHttpRequest
 		$.post("jqXHR/s", {val: str1},
-			function(input) {$("input#lineResult").val(input.message);},
+			function(input) {$("span#lineResult").text(input.message);},
 			'json');
 	});
 	$('input#linePwd').keydown(function() {
 		var str1 = $("input#lineSite").val();
 		var str2 = $("input#linePwd").val();
-		if (str1=="" || str2=="") {$("input#lineResult").val("");return};
+		if (str1=="" || str2=="") {$("span#lineResult").text("");return};
 		// Post via XMLHttpRequest
 		$.post("jqXHR/p", {val: str2},
-			function(input) {$("input#lineResult").val(input.message);},
+			function(input) {$("span#lineResult").text(input.message);},
 			'json');
 	});
+	*/
 
 	$(".selPalette").hover(
-		function () {$(this).addClass("hover");},
-		function () {$(this).removeClass("hover");}
+		function() {$(this).addClass("hover");},
+		function() {$(this).removeClass("hover");}
 	);
 	$(".selCanvas").hover(
-		function () {$(this).addClass("hover");},
-		function () {$(this).removeClass("hover");}
+		function() {$(this).addClass("hover");},
+		function() {$(this).removeClass("hover");}
 	);
 
 	$(".selPalette").click(function() {
@@ -75,12 +217,30 @@ $(document).ready(function($) {
 		$(this).css("background-color", color);
 	});
 
-	$("#reset").click(function() {
-		$(".selCanvas").css("background-color", "#fff");
-		$("input#lineGResult").val("");
+	$("#reset_p").click(function() {
+		$("input#lineSite").val("");
+		$("input#linePwd").val("");
+		$("span#lineResult").text("");
 	});
 
-	$("#generate").click(function() {
+	$("#generate_p").click(function() {
+		var str1 = $("input#lineSite").val();
+		var str2 = $("input#linePwd").val();
+		if (str1=="" || str2=="") {$("span#lineResult").text("");return};
+		// Post via XMLHttpRequest
+		$.post("jqXHR/p", {s: str1, p: str2},
+			function(input) {$("span#lineResult").text(input.message);},
+			'json');
+	});
+
+	$("#reset_g").click(function() {
+		color = "#fff";
+		$(".selCanvas").css("background-color", "#fff");
+		$("#selectedColor").css("background-color", "#fff");
+		$("span#lineGResult").text("");
+	});
+
+	$("#generate_g").click(function() {
 	var matrix = ""; var rgb = ""; var result = "";
 	function hex(x) {return ("0" + parseInt(x).toString(16)).slice(-2);}
 	$('.selCanvas').each(function(index) {
@@ -98,116 +258,14 @@ $(document).ready(function($) {
 		alert( "Cannot generate password !\nMust have at least 3 white cells !" );
 		return;
 	};
-	// Post message via AJAX
+	// Post message via XMLHttpRequest
 	$.post("jqXHR/g", {val: matrix},
-		function(input) {$("input#lineGResult").val(input.message);},
+		function(input) {$("span#lineGResult").text(input.message);},
 		'json');
 	});
 
-	$("#clear").click(function() {
-		$('textarea#wysiwyg').wysiwyg('clear');
-	});
 });
 </script>
-</head>
-<body>
 
-<div id="tabs">
-<ul>
-<li><a href="#tab-1">Visual Pass</a></li>
-<li><a href="#tab-2">Graphical Pass</a></li>
-</ul>
-
-<!--  SIMPLE PASS GEN T.A.B.  -->
-<div id="tab-1" class="ui-widget"><div class="ui-corner-all">
-	<p><span class="ui-icon ui-icon-info" style="float:left;margin-top:0.2em;"></span>
-	<strong style="float:left;">&nbsp;Password generator&nbsp;</strong>
-	<button id="help1" class="help"></button></p><br />
-	<label for="lineSite">Site you want to generate a password for:</label><br /><input id="lineSite" style="width:330px;"/><br /><br />
-	<label for="linePwd">A secret passphrase/ keyword for this site:<br />
-	<input id="linePwd" style="width:330px;" /><br /><br />
-	<label for="lineResult">Resulted password >></label><br /><input id="lineResult" style="width:330px;" /><br />
-<div id="block1" class="ui-state-highlight ui-corner-all help-widget">
-Here you can generate very complex passwords, that are easy to remember.<br />
-The resulted password is a lot better than a normal, easy to guess password!<br /><br />
-In the first textbox, you type the name of the site or program you want to create the password for.<br />
-In the second textbox, you type a passphrase that you can easily remember, maybe related to the site or application. If the phrase is long, the resulted password is also longer!<br /><br />
-<b>EXAMPLES</b>:<br /><i>(text 1) `Facebook` ; (text 2) `my fbk account is the best!` ; (resulted password) YXucpu6ihyRp9xdvkNZLXWOCYBf<br />
-(text 1) `TwiTTr` ; (text 2) `i LOVE to tweet` ; (resulted password) sqOoh1DakzuGxvQ</i><br /><br />
-<b>HINTS</b>: All text is case sensitive, so `Facebook` is different from `FaceBook` and different from `facebook`.<br />
-Before typing your passwords, you must be careful, noone must see what you type! If someone knows both the site and the passphrase, he can generate your password and break into your account!<br />
-This is different from everything you used before, you have to be original, but at the same time, use words easy to remember.
-</div></div></div>
-
-<!--  VISUAL PASS GEN T.A.B.  -->
-<div id="tab-2" class="ui-widget"><div class="ui-corner-all">
-<p><span class="ui-icon ui-icon-info" style="float:left;margin-top:0.2em;"></span>
-<strong>&nbsp;Visual Password generator&nbsp;</strong>
-<button id="help2" class="help"></button></p><br />
-
-<table style="float:left;">
-<tr><td colspan="3">Select color ...</td></tr>
-<tr>
-	<td class="selPalette" style="background:red;"> R</td>
-	<td class="selPalette" style="background:yellow;"> Y</td>
-	<td class="selPalette" style="background:blue;"> B</td>
-</tr><tr>
-	<td class="selPalette" style="background:orange;"> O</td>
-	<td class="selPalette" style="background:green;"> G</td>
-	<td class="selPalette" style="background:darkviolet;"> V</td>
-<tr></tr>
-	<td class="selPalette" style="background:white;"> X</td>
-	<td class="selPalette" style="background:grey;"> G</td>
-	<td class="selPalette" style="background:black;"> B</td>
-</tr>
-</table>
-<span style="float:left;"><center>&gt;&gt;</center><div style="margin-top:6px;" id="selectedColor"></div></span>
-<table style="float:left;">
-<tr><td colspan="5">... paint here</td></tr>
-<tr>
-	<td class="selCanvas" style="background:#fff;"> 01</td>
-	<td class="selCanvas" style="background:#fff;"> 02</td>
-	<td class="selCanvas" style="background:#fff;"> 03</td>
-	<td class="selCanvas" style="background:#fff;"> 04</td>
-	<td class="selCanvas" style="background:#fff;"> 05</td>
-</tr><tr>
-	<td class="selCanvas" style="background:#fff;"> 06</td>
-	<td class="selCanvas" style="background:#fff;"> 07</td>
-	<td class="selCanvas" style="background:#fff;"> 08</td>
-	<td class="selCanvas" style="background:#fff;"> 09</td>
-	<td class="selCanvas" style="background:#fff;"> 10</td>
-</tr><tr>
-	<td class="selCanvas" style="background:#fff;"> 11</td>
-	<td class="selCanvas" style="background:#fff;"> 12</td>
-	<td class="selCanvas" style="background:#fff;"> 13</td>
-	<td class="selCanvas" style="background:#fff;"> 14</td>
-	<td class="selCanvas" style="background:#fff;"> 15</td>
-</tr><tr>
-	<td class="selCanvas" style="background:#fff;"> 16</td>
-	<td class="selCanvas" style="background:#fff;"> 17</td>
-	<td class="selCanvas" style="background:#fff;"> 18</td>
-	<td class="selCanvas" style="background:#fff;"> 19</td>
-	<td class="selCanvas" style="background:#fff;"> 20</td>
-</tr><tr>
-	<td class="selCanvas" style="background:#fff;"> 21</td>
-	<td class="selCanvas" style="background:#fff;"> 22</td>
-	<td class="selCanvas" style="background:#fff;"> 23</td>
-	<td class="selCanvas" style="background:#fff;"> 24</td>
-	<td class="selCanvas" style="background:#fff;"> 25</td>
-</tr>
-</table>
-<div style="margin:1.8em;float:left">
-<button type="button" id="generate">Generate!</button><button type="button" id="reset">Reset</button><br /><br />
-<label for="lineResult">Resulted password >></label><br /><input id="lineGResult" style="width:300px;" />
-</div>
-<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-<div id="block2" class="ui-state-highlight ui-corner-all help-widget">
-Here you can generate passwords from your drawing.<br />
-You must select at least 3 colors, up to a maximum of 22 colors.<br />
-You must be very careful when you are drawing, noone must see what you paint!<br />
-If someone can reproduce your drawing and he knows the site where you will use this password, he can generate the same password and break into your account!
-</div></div></div>
-
-</div>
 </body>
 </html>

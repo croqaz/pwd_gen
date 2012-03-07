@@ -35,6 +35,7 @@ def server_static(filename=None, what=None):
 def home():
     return template(BASE_PATH + '/template.htm')
 
+"""
 # Text site name
 @post('/jqXHR/s')
 def ajax_call_s():
@@ -47,6 +48,7 @@ def ajax_call_s():
     response.content_type = 'application/json; charset=UTF-8'
     return json.dumps(resp)
     #
+"""
 
 # Text password
 @post('/jqXHR/p')
@@ -54,8 +56,9 @@ def ajax_call_p():
     #
     if not request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return 'Invalid XMLHttpRequest!'
-    global PWD
-    PWD = request.forms.get('val', '')
+    global SITE, PWD
+    PWD = request.forms.get('p', '')
+    SITE = request.forms.get('s', '')
     resp = {'message': generatePassword()}
     response.content_type = 'application/json; charset=UTF-8'
     return json.dumps(resp)
@@ -96,7 +99,7 @@ if __name__ == '__main__':
     if platform.system().lower()=='windows':
         debug(True)
         webbrowser.open_new_tab('http://localhost:333/')
-        run(host='localhost', port=333, reloader=False)
+        run(host='localhost', port=333, reloader=True)
     else:
         path = '/home/croqqq/pwd_gen'
         if path not in sys.path:
