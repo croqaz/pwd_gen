@@ -9,7 +9,7 @@
 	<link type="text/css" rel="stylesheet" href="js/bootstrap.css" />
 	<link type="text/css" rel="stylesheet" href="js/responsive.css" />
 	<style>
-	.input-xlarge, .input-large {font-family: "Courier New", Courier;}
+	.input-xxlarge, .input-large {font-family: "DejaVu Sans Mono", "Courier New", "Courier";}
 	.hashBox {padding-left:97px;padding-bottom:11px;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
 	.selPalette, .selCanvas {
 		width:25px; height:20px; padding:0.5em; margin:10px; border:1px solid black;
@@ -38,7 +38,9 @@
 			<!--  SIMPLE PASS GEN T.A.B.  -->
 			<div class="tab-pane active" id="tab-1"><div class="well">
 
-			<h3>&nbsp;Password generator&nbsp;<i class="icon-question-sign" id="click-help1" style="margin-top:0.2em;"></i></h3><br>
+			<button class="btn btn-mini btn-inverse" id="black_mode" style="float:right;">Black</button>
+
+			<h3>&nbsp;Password generator&nbsp;<i class="icon-question-sign" id="click-help1" style="margin-top:0.2em;cursor:pointer;cursor:hand;"></i></h3><br>
 
 			<div class="control-group">
 				<label for="lineSite">Site you want to generate a password for:</label>
@@ -73,11 +75,12 @@
 			In the first textbox, you type the name of the site or program you want to create the password for.<br>
 			In the second textbox, you type a passphrase that you can easily remember, maybe related to the site or application. If the phrase is long, the resulted password is also longer!</p>
 			<span class="label label-info">EXAMPLES</span><br>
-			<p style="margin-top:0.5em;"><i>(text 1) `Facebook` ; (text 2) `my fbk account is the best!` ; (resulted password) YXucpu6ihyRp9xdvkNZLXWOCYBf<br>
+			<p style="margin-top:0.5em;"><i>(text 1) `Facebook` ; (text 2) `my fbk account is the best!` ; (resulted password) YXucpu6ihyRp9xdvkNZLXWOC<br>
 			(text 1) `TwiTTr` ; (text 2) `i LOVE to tweet` ; (resulted password) sqOoh1DakzuGxvQ</i></p>
 			<span class="label label-info">HINTS</span><br>
 			<p style="margin-top:0.5em;"><i>All text is Case Sensitive</i>, so `Facebook` is different from `FaceBook` and different from `facebook`.<br>
-			Before typing your passwords, you must be careful, <i>noone must see what you type</i>! If someone knows both the site and the passphrase, he can generate your password and break into your account!<br><br>
+			If you are lazy, you can make some kind of template for your passwords, for example, `MySite` and `MySite is the best!`; replace `MySite` with your site/ program. The site and the password are cryptographically hashed, so it's safe.<br>
+			Before typing your passwords, you must be careful, <i>noone must see what you type</i>! Use the `black mode` if you think someone is watching behind your back. If someone knows both <i>the site</i> and <i>the passphrase</i>, he can generate your password and break into your account!<br><br>
 			This is different from everything you used before, you have to be original, but at the same time, use words easy to remember.</p>
 			</div> <!--  /help box  -->
 
@@ -86,7 +89,7 @@
 			<!--  VISUAL PASS GEN T.A.B.  -->
 			<div class="tab-pane" id="tab-2"><div class="well">
 
-			<h3>&nbsp;Visual Password generator&nbsp;<i class="icon-question-sign" id="click-help2" style="margin-top:0.2em;"></i></h3><br>
+			<h3>&nbsp;Visual Password generator&nbsp;<i class="icon-question-sign" id="click-help2" style="margin-top:0.2em;cursor:pointer;cursor:hand;"></i></h3><br>
 
 			<table style="float:left;">
 			<tr><td colspan="3"><big>Select color ...</big></td></tr>
@@ -154,9 +157,10 @@
 			<div id="box-help2" class="alert alert-info">
 			<span class="label label-info">HELP</span><br>
 			<p style="margin-top:0.5em;">Here you can generate passwords from your drawing.<br>
-			You must select at least <b>3</b> colors, up to a maximum of <b>22</b> colors.<br>
+			The order in which you draw the colors is not important, only the shape is.<br>
+			You must select at least <b>3</b> colors, up to a maximum of <b>22</b> colors.<br><br>
 			You must be very careful when you are drawing, noone must see what you paint!<br>
-			If someone can reproduce your drawing and he knows the site where you will use this password, he can generate the same password and break into your account!</p>
+			If someone can reproduce your drawing and he knows the site/ program where you use this password, he can generate the same password and log into your account!</p>
 			</div> <!--  /help box  -->
 
 			</div></div> <!--  /T.A.B.  -->
@@ -172,6 +176,7 @@
 
 <script type="text/javascript">
 var color = "#fff";
+var black_mode = false;
 
 function reset_p() {
 	$("span#lineResult").text("");
@@ -223,6 +228,17 @@ $(document).ready(function($) {
 	});
 	$(".selCanvas").click(function() {
 		$(this).css("background-color", color);
+	});
+
+	$("#black_mode").click(function() {
+		if (black_mode) {
+			$("input#lineSite").css("background-color", "#fff");
+			$("input#linePwd").css("background-color", "#fff");
+		} else {
+			$("input#lineSite").css("background-color", "rgb(85, 85, 85)");
+			$("input#linePwd").css("background-color", "rgb(85, 85, 85)");
+		};
+		black_mode = !black_mode;
 	});
 
 	$("#reset_p").click(function() {
