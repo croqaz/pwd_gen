@@ -9,7 +9,8 @@
 	<link type="text/css" rel="stylesheet" href="js/bootstrap.css" />
 	<link type="text/css" rel="stylesheet" href="js/responsive.css" />
 	<style>
-	.hashBox {padding-left:98px;padding-bottom:11px;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
+	.input-xlarge, .input-large {font-family: "Courier New", Courier;}
+	.hashBox {padding-left:97px;padding-bottom:11px;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
 	.selPalette, .selCanvas {
 		width:25px; height:20px; padding:0.5em; margin:10px; border:1px solid black;
 		color:#333; text-align:center; text-shadow: 0px 5px 20px #fff;}
@@ -21,7 +22,7 @@
 </head>
 <body>
 
-<div class="container-fluid" style="margin-top:18px;">
+<div class="container-fluid" style="margin-top:20px;">
 	<div class="row-fluid">
 		<div class="span2">&nbsp;</div>
 
@@ -37,20 +38,22 @@
 			<!--  SIMPLE PASS GEN T.A.B.  -->
 			<div class="tab-pane active" id="tab-1"><div class="well">
 
-			<h3>&nbsp;Password generator&nbsp;<i class="icon-question-sign" id="click-help1" style="margin-top:0.2em;"></i></h3><br />
+			<h3>&nbsp;Password generator&nbsp;<i class="icon-question-sign" id="click-help1" style="margin-top:0.2em;"></i></h3><br>
 
 			<div class="control-group">
 				<label for="lineSite">Site you want to generate a password for:</label>
 				<div class="controls">
-					<input type="text" class="input-xxlarge" id="lineSite" />&nbsp;<span id="siteLen"></span><br />
+					<input type="text" class="input-xxlarge" id="lineSite" />&nbsp;
+					<span class="label label-info" id="siteLen" style="padding:8px 8px 1px 7px;font-size:14px;">0</span><br>
 				</div>
 				<label for="linePwd">A secret passphrase/ keyword for this site:</label>
 				<div class="controls">
-					<input type="text" class="input-xxlarge" id="linePwd" />&nbsp;<span id="pwdLen"></span><br />
+					<input type="text" class="input-xxlarge" id="linePwd" />&nbsp;
+					<span class="label label-info" id="pwdLen" style="padding:8px 8px 1px 7px;font-size:14px;">0</span><br>
 				</div>
 				<div class="controls" style="margin-top:0.5em;">
 					<button class="btn btn-large btn-primary" id="generate_p">Generate!</button>&nbsp;
-					<button class="btn btn-large btn-warning" id="reset_p">Reset</button><br />
+					<button class="btn btn-large btn-warning" id="reset_p">Reset</button><br>
 				</div>
 				<label for="lineResult" style="margin-top:1em;">Resulted password &gt;&gt;</label>
 				<div class="controls">
@@ -64,17 +67,17 @@
 			</div>
 
 			<div id="box-help1" class="alert alert-info">
-			<span class="label label-info">HELP</span><br />
-			<p style="margin-top:0.5em;">Here you can generate very complex passwords, using words that you can easily remember.<br />
-			The resulted password is a lot better than a normal, easy to guess password!<br /><br />
-			In the first textbox, you type the name of the site or program you want to create the password for.<br />
+			<span class="label label-info">HELP</span><br>
+			<p style="margin-top:0.5em;">Here you can generate very complex passwords, using words that you can easily remember.<br>
+			The resulted password is a lot better than a normal, easy to guess password!<br><br>
+			In the first textbox, you type the name of the site or program you want to create the password for.<br>
 			In the second textbox, you type a passphrase that you can easily remember, maybe related to the site or application. If the phrase is long, the resulted password is also longer!</p>
-			<span class="label label-info">EXAMPLES</span><br />
-			<p style="margin-top:0.5em;"><i>(text 1) `Facebook` ; (text 2) `my fbk account is the best!` ; (resulted password) YXucpu6ihyRp9xdvkNZLXWOCYBf<br />
+			<span class="label label-info">EXAMPLES</span><br>
+			<p style="margin-top:0.5em;"><i>(text 1) `Facebook` ; (text 2) `my fbk account is the best!` ; (resulted password) YXucpu6ihyRp9xdvkNZLXWOCYBf<br>
 			(text 1) `TwiTTr` ; (text 2) `i LOVE to tweet` ; (resulted password) sqOoh1DakzuGxvQ</i></p>
-			<span class="label label-info">HINTS</span><br />
-			<p style="margin-top:0.5em;"><i>All text is Case Sensitive</i>, so `Facebook` is different from `FaceBook` and different from `facebook`.<br />
-			Before typing your passwords, you must be careful, <i>noone must see what you type</i>! If someone knows both the site and the passphrase, he can generate your password and break into your account!<br /><br />
+			<span class="label label-info">HINTS</span><br>
+			<p style="margin-top:0.5em;"><i>All text is Case Sensitive</i>, so `Facebook` is different from `FaceBook` and different from `facebook`.<br>
+			Before typing your passwords, you must be careful, <i>noone must see what you type</i>! If someone knows both the site and the passphrase, he can generate your password and break into your account!<br><br>
 			This is different from everything you used before, you have to be original, but at the same time, use words easy to remember.</p>
 			</div> <!--  /help box  -->
 
@@ -83,7 +86,7 @@
 			<!--  VISUAL PASS GEN T.A.B.  -->
 			<div class="tab-pane" id="tab-2"><div class="well">
 
-			<h3>&nbsp;Visual Password generator&nbsp;<i class="icon-question-sign" id="click-help2" style="margin-top:0.2em;"></i></h3><br />
+			<h3>&nbsp;Visual Password generator&nbsp;<i class="icon-question-sign" id="click-help2" style="margin-top:0.2em;"></i></h3><br>
 
 			<table style="float:left;">
 			<tr><td colspan="3"><big>Select color ...</big></td></tr>
@@ -141,18 +144,18 @@
 
 			<div style="margin:1.8em;float:left">
 				<button class="btn btn-large btn-primary" id="generate_g">Generate!</button>&nbsp;
-				<button class="btn btn-large btn-warning" id="reset_g">Reset</button><br />
+				<button class="btn btn-large btn-warning" id="reset_g">Reset</button><br>
 				<label for="lineResult" style="margin-top:0.5em;">Resulted password &gt;&gt;</label>
 				<span class="input-large uneditable-input" id="lineGResult"></span>
 			</div>
 
-			<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+			<br><br><br><br><br><br><br><br><br><br><br>
 
 			<div id="box-help2" class="alert alert-info">
-			<span class="label label-info">HELP</span><br />
-			<p style="margin-top:0.5em;">Here you can generate passwords from your drawing.<br />
-			You must select at least <b>3</b> colors, up to a maximum of <b>22</b> colors.<br />
-			You must be very careful when you are drawing, noone must see what you paint!<br />
+			<span class="label label-info">HELP</span><br>
+			<p style="margin-top:0.5em;">Here you can generate passwords from your drawing.<br>
+			You must select at least <b>3</b> colors, up to a maximum of <b>22</b> colors.<br>
+			You must be very careful when you are drawing, noone must see what you paint!<br>
 			If someone can reproduce your drawing and he knows the site where you will use this password, he can generate the same password and break into your account!</p>
 			</div> <!--  /help box  -->
 
@@ -170,6 +173,15 @@
 <script type="text/javascript">
 var color = "#fff";
 
+function reset_p() {
+	$("span#lineResult").text("");
+	$("span#c1").css("background-color", "transparent");
+	$("span#c2").css("background-color", "transparent");
+	$("span#c3").css("background-color", "transparent");
+	$("span#c4").css("background-color", "transparent");
+	$("span#c5").css("background-color", "transparent");
+}
+
 $(document).ready(function($) {
 	$.ajaxSetup({
 		cache: false
@@ -178,21 +190,21 @@ $(document).ready(function($) {
 	$("#box-help1").hide();
 	$("#box-help2").hide();
 
-	$("#click-help1").click(function(){
+	$("#click-help1").click(function() {
 		$("#box-help1").toggle(750);
 	});
-	$("#click-help2").click(function(){
+	$("#click-help2").click(function() {
 		$("#box-help2").toggle(750);
 	});
 
 	$('input#lineSite').keyup(function() {
 		var str = $("input#lineSite").val();
-		if (str=="") {$("span#siteLen").text("");return};
+		if (str=="") {$("span#siteLen").text("0");return};
 		$("span#siteLen").text(str.length);
 	});
 	$('input#linePwd').keyup(function() {
 		var str = $("input#linePwd").val();
-		if (str=="") {$("span#pwdLen").text("");return};
+		if (str=="") {$("span#pwdLen").text("0");return};
 		$("span#pwdLen").text(str.length);
 	});
 
@@ -216,18 +228,33 @@ $(document).ready(function($) {
 	$("#reset_p").click(function() {
 		$("input#lineSite").val("");
 		$("input#linePwd").val("");
-		$("span#lineResult").text("");
-		$("span#c1").css("background-color", "#fff");
-		$("span#c2").css("background-color", "#fff");
-		$("span#c3").css("background-color", "#fff");
-		$("span#c4").css("background-color", "#fff");
-		$("span#c5").css("background-color", "#fff");
+		reset_p();
+	});
+
+	$("#reset_g").click(function() {
+		color = "#fff";
+		$(".selCanvas").css("background-color", "#fff");
+		$("#selectedColor").css("background-color", "#fff");
+		$("span#lineGResult").text("");
 	});
 
 	$("#generate_p").click(function() {
 		var str1 = $("input#lineSite").val();
 		var str2 = $("input#linePwd").val();
-		if (str1=="" || str2=="") {$("span#lineResult").text("");return};
+		if (str1=="" || str2=="") { reset_p(); return };
+		// Remove all error alerts
+		$('.alert-error').remove();
+		// The site and the password must have at least 3 characters
+		if (str1.length < 3) {
+			$('#box-help1').before('<div class="alert alert-error"><a class="close" data-dismiss="alert">×</a><strong>Error!</strong> The Site must have at least 3 characters!</div>');
+			reset_p();
+			return;
+		};
+		if (str2.length < 3) {
+			$('#box-help1').before('<div class="alert alert-error"><a class="close" data-dismiss="alert">×</a><strong>Error!</strong> The Password must have at least 3 characters!</div>');
+			reset_p();
+			return;
+		};
 		// Post via XMLHttpRequest
 		$.post("jqXHR/p", {s: str1, p: str2},
 			function(input) {
@@ -241,37 +268,35 @@ $(document).ready(function($) {
 			'json');
 	});
 
-	$("#reset_g").click(function() {
-		color = "#fff";
-		$(".selCanvas").css("background-color", "#fff");
-		$("#selectedColor").css("background-color", "#fff");
-		$("span#lineGResult").text("");
-	});
-
 	$("#generate_g").click(function() {
-	var matrix = ""; var rgb = ""; var result = "";
-	function hex(x) {return ("0" + parseInt(x).toString(16)).slice(-2);}
-	$('.selCanvas').each(function(index) {
-		rgb = $(this).css('background-color').match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-		result = hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
-		matrix += result + ' ';
+		var matrix = ""; var rgb = ""; var result = "";
+		function hex(x) {return ("0" + parseInt(x).toString(16)).slice(-2);}
+		$('.selCanvas').each(function(index) {
+			rgb = $(this).css('background-color').match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+			result = hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+			matrix += result + ' ';
+		});
+		// Remove all error alerts
+		$('.alert-error').remove();
+		// Must have 3 colors selected
+		if ( $('.selCanvas').length - matrix.match(/ffffff/g).length < 3 ) {
+			$('#box-help2').before('<div class="alert alert-error"><a class="close" data-dismiss="alert">×</a><strong>Error!</strong> Cannot generate password!\nMust paint at least 3 cells!</div>');
+			$("span#lineGResult").text("");
+			return;
+		};
+		// Must have 3 white cells
+		if ( matrix.match(/ffffff/g).length < 3 ) {
+			$('#box-help2').before('<div class="alert alert-error"><a class="close" data-dismiss="alert">×</a><strong>Error!</strong> Cannot generate password!\nMust have at least 3 white cells!</div>');
+			$("span#lineGResult").text("");
+			return;
+		};
+		// Post message via XMLHttpRequest
+		$.post("jqXHR/g", {val: matrix},
+			function(input) {
+				$("span#lineGResult").text(input.message);
+			},
+			'json');
 	});
-	// Must have 3 colors selected
-	if ( $('.selCanvas').length - matrix.match(/ffffff/g).length < 3 ) {
-		alert( "Cannot generate password !\nMust paint at least 3 cells !" );
-		return;
-	};
-	// Must have 3 white cells
-	if ( matrix.match(/ffffff/g).length < 3 ) {
-		alert( "Cannot generate password !\nMust have at least 3 white cells !" );
-		return;
-	};
-	// Post message via XMLHttpRequest
-	$.post("jqXHR/g", {val: matrix},
-		function(input) {$("span#lineGResult").text(input.message);},
-		'json');
-	});
-
 });
 </script>
 

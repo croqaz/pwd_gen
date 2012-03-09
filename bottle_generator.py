@@ -13,7 +13,6 @@ import webbrowser
 
 import json
 import binascii as ba
-import cStringIO as IO
 from pbkdf2 import PBKDF2
 
 from bottle import default_app, run, route, post, debug
@@ -43,6 +42,7 @@ def ajax_call_p():
     if not request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return 'Invalid XMLHttpRequest!'
     global SITE, PWD
+    #
     PWD = request.forms.get('p', '')
     SITE = request.forms.get('s', '')
     response.content_type = 'application/json; charset=UTF-8'
@@ -56,6 +56,7 @@ def ajax_call_g():
     if not request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return 'Invalid XMLHttpRequest!'
     global SITE, PWD
+    #
     colors = request.forms.get('val', '')
     PWD = ' '.join(['0' if x == 'ffffff' else x for x in colors.split()])
     SITE = ' '.join(['0' if x != 'ffffff' else 'fff' for x in colors.split()])
@@ -95,7 +96,7 @@ if __name__ == '__main__':
     if platform.system().lower()=='windows':
         debug(True)
         webbrowser.open_new_tab('http://localhost:333/')
-        run(host='localhost', port=333, reloader=True)
+        run(host='localhost', port=333, reloader=False)
     else:
         path = '/home/croqqq/pwd_gen'
         if path not in sys.path:
