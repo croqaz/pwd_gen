@@ -2,7 +2,10 @@
 Password generator
 ------------------
 
-Password generator is a little program that generates complex and secure passwords, by using words *easy for you to remember*.
+Password generator is a little program that generates complex and secure REPETABLE passwords, by using words *easy for you to remember*.
+
+This is NOT a random password generator!<br>
+Instead, it's more like a password manager... that doesn't store your passwords.
 
 The program runs in the browser. The generator server is written in Python and you can run it on your computer, or in the cloud. Eg: on dotCloud or python-anywhere.<br>
 I have already deployed [pwd_gen on dotCloud](https://pwdgen-vbcrlf.dotcloud.com).
