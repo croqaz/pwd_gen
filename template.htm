@@ -55,7 +55,8 @@
 				</div>
 				<div class="controls" style="margin-top:0.5em;">
 					<button class="btn btn-large btn-primary" id="generate_p">Generate!</button>&nbsp;
-					<button class="btn btn-large btn-warning" id="reset_p">Reset</button><br>
+					<button class="btn btn-large btn-warning" id="reset_p">Reset</button>&nbsp;
+					<button class="btn btn-large btn-info" id="copy_p">Copy</button><br>
 				</div>
 				<label for="lineResult" style="margin-top:1em;">Resulted password &gt;&gt;</label>
 				<div class="controls">
@@ -147,7 +148,8 @@
 
 			<div style="margin:1.8em;float:left">
 				<button class="btn btn-large btn-primary" id="generate_g">Generate!</button>&nbsp;
-				<button class="btn btn-large btn-warning" id="reset_g">Reset</button><br>
+				<button class="btn btn-large btn-warning" id="reset_g">Reset</button>&nbsp;
+				<button class="btn btn-large btn-info" id="copy_g">Copy</button><br>
 				<label for="lineResult" style="margin-top:0.5em;">Resulted password &gt;&gt;</label>
 				<span class="input-large uneditable-input" id="lineGResult"></span>
 			</div>
@@ -173,13 +175,23 @@
 
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/ZeroClipboard.js"></script>
 
 <script type="text/javascript">
 var color = "#fff";
 var black_mode = false;
 
+var clip1 = new ZeroClipboard(document.getElementById("copy_p"), {
+	moviePath: "js/ZeroClipboard.swf"
+});
+var clip2 = new ZeroClipboard(document.getElementById("copy_g"), {
+	moviePath: "js/ZeroClipboard.swf"
+});
+
 function reset_p() {
+	// Reset from first tab
 	$("span#lineResult").text("");
+	$("#copy_p").attr("data-clipboard-text", "");
 	$("span#c1").css("background-color", "transparent");
 	$("span#c2").css("background-color", "transparent");
 	$("span#c3").css("background-color", "transparent");
@@ -251,6 +263,7 @@ $(document).ready(function($) {
 		color = "#fff";
 		$(".selCanvas").css("background-color", "#fff");
 		$("#selectedColor").css("background-color", "#fff");
+		$("#copy_g").attr("data-clipboard-text", "");
 		$("span#lineGResult").text("");
 	});
 
@@ -275,6 +288,7 @@ $(document).ready(function($) {
 		$.post("jqXHR/p", {s: str1, p: str2},
 			function(input) {
 				$("span#lineResult").text(input.message);
+				$("#copy_p").attr("data-clipboard-text", input.message);
 				$("span#c1").css("background-color", "#"+input.c1);
 				$("span#c2").css("background-color", "#"+input.c2);
 				$("span#c3").css("background-color", "#"+input.c3);
@@ -297,18 +311,21 @@ $(document).ready(function($) {
 		// Must have 3 colors selected
 		if ( $('.selCanvas').length - matrix.match(/ffffff/g).length < 3 ) {
 			$('#box-help2').before('<div class="alert alert-error"><a class="close" data-dismiss="alert">×</a><strong>Error!</strong> Cannot generate password!\nMust paint at least 3 cells!</div>');
+			$("#copy_g").attr("data-clipboard-text", "");
 			$("span#lineGResult").text("");
 			return;
 		};
 		// Must have 3 white cells
 		if ( matrix.match(/ffffff/g).length < 3 ) {
 			$('#box-help2').before('<div class="alert alert-error"><a class="close" data-dismiss="alert">×</a><strong>Error!</strong> Cannot generate password!\nMust have at least 3 white cells!</div>');
+			$("#copy_g").attr("data-clipboard-text", "");
 			$("span#lineGResult").text("");
 			return;
 		};
 		// Post message via XMLHttpRequest
 		$.post("jqXHR/g", {val: matrix},
 			function(input) {
+				$("#copy_g").attr("data-clipboard-text", input.message);
 				$("span#lineGResult").text(input.message);
 			},
 			'json');
